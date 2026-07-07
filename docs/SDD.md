@@ -282,7 +282,7 @@ Contenido del reporte (visible en la aplicación y descargable como PDF):
 | D-07 | Infraestructura | Planes gratuitos (Vercel + Supabase + Resend) | Costo cero de operación al arrancar. |
 | D-08 | Nombre | **Lumea** | Elegido por la dueña del producto. Nombre de marca corto y memorable, evoca "lumen/luz": claridad en las cuentas. Dominios candidatos: lumea.uy / lumea.app. |
 | D-09 | Documentos de facturación | Adjuntos (PDF o imagen) sobre el cierre mensual, subibles por cualquiera de las partes y descargables por ambas | La factura la puede emitir la persona trabajadora y el comprobante de pago la pagadora; el cierre es el lugar natural donde ambas los buscan después. |
-| D-10 | Sistema de diseño | **«Sol»** (cálido dorado, papel, logo de sol) elegido como dirección base entre las tres prototipadas; Faro y Ventana descartadas | Decisión de la dueña del producto. La dirección puede refinarse (tonos, logo, tipografía) sin cambiar su carácter. |
+| D-10 | Sistema de diseño | **«Sol» limpio**: papel casi blanco, acento dorado, logo de sol, tipografía amigable. **Siempre clara**: sin modo oscuro. Sin tonos violeta ni verdes de marca (el verde queda solo para el estado «aprobada»). Faro y Ventana descartadas. | Decisión de la dueña del producto: estética limpia, luminosa y cercana, nunca «tech». |
 
 ### Preguntas abiertas
 

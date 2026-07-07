@@ -17,19 +17,22 @@ at what rate).
 
 BRAND
 - Name: Lumea (invented, evokes "lumen"/light — clarity in the accounts).
-- Chosen direction to refine, NOT replace: "Sol" — warm paper background,
-  golden-amber accent (currently #C77E14 on #FBF7F0 paper, dark ink #2A241C),
-  a small sun as the logo mark, friendly rounded humanist typography,
-  lowercase wordmark "lumea".
-- Personality: warm, honest, simple, optimistic. Never corporate, never
-  childish, never fintech-cold.
+- Chosen direction to refine, NOT replace: "Sol" — clean, near-white warm
+  paper background, golden-amber accent (currently #C77E14 on #FDFBF6
+  paper, warm ink #2E2921), a small sun as the logo mark, friendly rounded
+  humanist typography, lowercase wordmark "lumea".
+- The app is ALWAYS light: no dark mode, no black/dark backgrounds.
+- Personality: warm, honest, simple, optimistic, airy and clean. Never
+  corporate, never childish, never fintech-cold, never "techy". No purple
+  or green brand tones (green appears only in tiny "approved" status
+  chips), no neon, no gradients-on-dark.
 
 YOUR TASK
 Produce 3 refined variations of this same "Sol" direction (do not propose
 new directions in other hues):
 1. A refined color system: paper/surface tones, ink tones, the golden
-   accent, and soft fills — as design tokens with hex values, for BOTH
-   light and dark themes (dark must be designed, not inverted).
+   accent, and soft fills — as design tokens with hex values. Light
+   theme only: the app never renders on dark backgrounds.
 2. Logo exploration: 4-6 sun mark concepts (geometric rays, half sun
    rising over a horizon/roofline, sun through a window, sun + clock
    hybrid, abstract "a" with sun counter). Simple enough to work at
@@ -46,8 +49,8 @@ HARD CONSTRAINTS
 - Status colors are reserved and must stay distinct from the brand
   accent: approved = green, pending = neutral gray chip, rejected = red.
 - Chart client colors: one fixed color per client, must pass contrast
-  (>= 3:1 vs surface) and color-vision-deficiency separation on both
-  light and dark surfaces; never reuse status colors for clients.
+  (>= 3:1 vs surface) and color-vision-deficiency separation on the
+  light surface; never reuse status colors for clients.
 - Currency format: "$ 1.160" (UYU, dot as thousands separator);
   dates DD/MM; all UI text in Spanish.
 - Big touch targets, one primary action per screen, readable by users
