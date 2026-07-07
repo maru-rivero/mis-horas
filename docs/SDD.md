@@ -1,10 +1,12 @@
 # Documento de Diseño de Software (SDD)
 
-## MisHoras *(nombre provisorio)* — Registro de horas y gastos para servicios del hogar
+## Lumea — Registro de horas y gastos para servicios del hogar
+
+*Lumea: nombre de marca inventado, evocando "lumen/luz" — claridad y transparencia en las cuentas.*
 
 | | |
 |---|---|
-| **Versión** | 0.1 (borrador inicial) |
+| **Versión** | 0.2 |
 | **Fecha** | 2026-07-07 |
 | **Estado** | En revisión |
 | **Mercado** | Uruguay (es-UY, UYU, zona horaria America/Montevideo) |
@@ -277,14 +279,14 @@ Contenido del reporte (visible en la aplicación y descargable como PDF):
 | D-05 | Granularidad de aprobación | Individual **y** por lote | Pedido explícito; ambas con notificación a todas las partes. |
 | D-06 | Cierre de mes | Automático, día 5 del mes siguiente, con recordatorios días 1 y 3 | Pedido explícito de cierre automático; la gracia da tiempo de revisión. |
 | D-07 | Infraestructura | Planes gratuitos (Vercel + Supabase + Resend) | Costo cero de operación al arrancar. |
-| D-08 | Nombre | **Pendiente** — "MisHoras" como título provisorio | En evaluación con la persona dueña del producto. |
+| D-08 | Nombre | **Lumea** | Elegido por la dueña del producto. Nombre de marca corto y memorable, evoca "lumen/luz": claridad en las cuentas. Dominios candidatos: lumea.uy / lumea.app. |
 | D-09 | Documentos de facturación | Adjuntos (PDF o imagen) sobre el cierre mensual, subibles por cualquiera de las partes y descargables por ambas | La factura la puede emitir la persona trabajadora y el comprobante de pago la pagadora; el cierre es el lugar natural donde ambas los buscan después. |
 
 ### Preguntas abiertas
 
 | # | Pregunta | Supuesto vigente mientras tanto |
 |---|---|---|
-| P-01 | ¿Nombre definitivo de la aplicación? | "MisHoras" (provisorio). |
+| P-01 | ~~¿Nombre definitivo de la aplicación?~~ | **Resuelta**: Lumea (ver D-08). |
 | P-02 | ¿Tarifas diferenciadas (nocturna, feriados)? | Una sola tarifa por acuerdo en el MVP. |
 | P-03 | ¿Se necesita algo relativo a BPS / trabajo doméstico formal (recibos, aguinaldo)? | Fuera de alcance del MVP; el reporte sirve como respaldo informal. |
 | P-04 | ¿Idioma del documento y del repositorio? | SDD en español; código y commits en inglés (convención técnica). |
