@@ -1,0 +1,1057 @@
+<title>Lumea — Prototipo navegable</title>
+<style>
+  /* ===== Tokens ===== */
+  :root{
+    --papel:#FBF7F0;
+    --papel-2:#F3ECDF;
+    --carta:#FFFFFF;
+    --tinta:#2A241C;
+    --tinta-2:#6E6558;
+    --linea:#E4DAC8;
+    --sol:#C77E14;
+    --sol-fuerte:#96600C;
+    --sol-suave:#F6E7C8;
+    --verde:#2F7D4F;
+    --verde-suave:#E1F0E6;
+    --rojo:#B3372F;
+    --rojo-suave:#F7E2E0;
+    --espera:#6B665E;
+    --espera-suave:#EDE8DE;
+    --sombra:0 10px 30px rgba(64,48,20,.14);
+    --radio:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --papel:#211C14;
+      --papel-2:#191510;
+      --carta:#2B2519;
+      --tinta:#F2EAD9;
+      --tinta-2:#B5A98F;
+      --linea:#463C2A;
+      --sol:#E9A83C;
+      --sol-fuerte:#E9A83C;
+      --sol-suave:#403214;
+      --verde:#5CB584;
+      --verde-suave:#22392B;
+      --rojo:#E07A72;
+      --rojo-suave:#42221F;
+      --espera:#A79F90;
+      --espera-suave:#332D22;
+      --sombra:0 10px 30px rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="dark"]{
+    --papel:#211C14;
+    --papel-2:#191510;
+    --carta:#2B2519;
+    --tinta:#F2EAD9;
+    --tinta-2:#B5A98F;
+    --linea:#463C2A;
+    --sol:#E9A83C;
+    --sol-fuerte:#E9A83C;
+    --sol-suave:#403214;
+    --verde:#5CB584;
+    --verde-suave:#22392B;
+    --rojo:#E07A72;
+    --rojo-suave:#42221F;
+    --espera:#A79F90;
+    --espera-suave:#332D22;
+    --sombra:0 10px 30px rgba(0,0,0,.45);
+  }
+  :root[data-theme="light"]{
+    --papel:#FBF7F0;
+    --papel-2:#F3ECDF;
+    --carta:#FFFFFF;
+    --tinta:#2A241C;
+    --tinta-2:#6E6558;
+    --linea:#E4DAC8;
+    --sol:#C77E14;
+    --sol-fuerte:#96600C;
+    --sol-suave:#F6E7C8;
+    --verde:#2F7D4F;
+    --verde-suave:#E1F0E6;
+    --rojo:#B3372F;
+    --rojo-suave:#F7E2E0;
+    --espera:#6B665E;
+    --espera-suave:#EDE8DE;
+    --sombra:0 10px 30px rgba(64,48,20,.14);
+  }
+
+  /* ===== Base ===== */
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; }
+  body{
+    background:var(--papel);
+    color:var(--tinta);
+    font-family:"Trebuchet MS","Segoe UI",system-ui,-apple-system,sans-serif;
+    line-height:1.45;
+  }
+  button{ font:inherit; cursor:pointer; }
+  input,select,textarea{ font:inherit; color:inherit; }
+
+  /* ===== Shell del prototipo (fuera del telefono) ===== */
+  .shell{
+    max-width:1060px; margin:0 auto; padding:28px 20px 60px;
+  }
+  .marca{
+    display:flex; align-items:center; gap:10px; margin-bottom:4px;
+  }
+  .marca svg{ display:block; }
+  .wordmark{
+    font-size:30px; font-weight:700; letter-spacing:.5px; color:var(--tinta);
+  }
+  .wordmark b{ color:var(--sol-fuerte); font-weight:700; }
+  .shell-sub{
+    color:var(--tinta-2); margin:0 0 22px; max-width:62ch;
+  }
+  .pantallas{
+    display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;
+  }
+  .chip-nav{
+    border:1px solid var(--linea); background:var(--carta); color:var(--tinta);
+    border-radius:999px; padding:7px 14px; font-size:13.5px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .chip-nav .rol{
+    font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--tinta-2);
+  }
+  .chip-nav[aria-current="true"]{
+    background:var(--sol-suave); border-color:var(--sol); color:var(--tinta);
+  }
+  .chip-nav:focus-visible, .tabs button:focus-visible, .btn:focus-visible{
+    outline:2px solid var(--sol); outline-offset:2px;
+  }
+  .nota-pantalla{
+    background:var(--papel-2); border:1px dashed var(--linea);
+    border-radius:var(--radio); padding:10px 14px; font-size:14px;
+    color:var(--tinta-2); margin-bottom:22px; max-width:760px;
+  }
+  .nota-pantalla b{ color:var(--tinta); }
+
+  .escenario{ display:flex; justify-content:center; }
+
+  /* ===== Telefono ===== */
+  .telefono{
+    width:min(400px,100%);
+    background:var(--carta);
+    border:1px solid var(--linea);
+    border-radius:30px;
+    box-shadow:var(--sombra);
+    overflow:hidden;
+    display:flex; flex-direction:column;
+    height:min(78vh,780px); min-height:600px;
+  }
+  .statusbar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 20px 6px; font-size:12px; color:var(--tinta-2);
+    font-variant-numeric:tabular-nums;
+  }
+  .app{ flex:1; display:flex; flex-direction:column; min-height:0; }
+  .screen{ flex:1; overflow-y:auto; padding:6px 18px 18px; display:none; }
+  .screen.activa{ display:block; }
+
+  /* ===== Tabs inferiores ===== */
+  .tabs{
+    display:grid; grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--linea); background:var(--carta);
+  }
+  .tabs button{
+    background:none; border:none; padding:9px 4px 12px;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    color:var(--tinta-2); font-size:11.5px;
+  }
+  .tabs button svg{ width:22px; height:22px; }
+  .tabs button.activa{ color:var(--sol-fuerte); font-weight:700; }
+
+  /* ===== Componentes de la app ===== */
+  .app-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    padding:10px 2px 6px;
+  }
+  .app-head h1{
+    margin:0; font-size:22px; letter-spacing:.2px; text-wrap:balance;
+  }
+  .app-head .mini{ font-size:12.5px; color:var(--tinta-2); }
+  .saludo{ margin:4px 2px 14px; color:var(--tinta-2); font-size:14.5px; }
+
+  .card{
+    background:var(--papel); border:1px solid var(--linea);
+    border-radius:var(--radio); padding:14px; margin-bottom:12px;
+  }
+  .card h3{ margin:0 0 2px; font-size:16px; }
+  .card .sub{ font-size:13px; color:var(--tinta-2); }
+  .fila{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+  .num{ font-variant-numeric:tabular-nums; }
+
+  .kpis{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:12px 0;
+  }
+  .kpi{
+    background:var(--papel); border:1px solid var(--linea); border-radius:12px;
+    padding:10px 8px; text-align:center;
+  }
+  .kpi .v{ font-size:18px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .kpi .k{ font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--tinta-2); }
+
+  .chip{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:12px; font-weight:700; border-radius:999px; padding:3px 10px;
+    white-space:nowrap;
+  }
+  .chip.ok{ background:var(--verde-suave); color:var(--verde); }
+  .chip.esp{ background:var(--espera-suave); color:var(--espera); }
+  .chip.no{ background:var(--rojo-suave); color:var(--rojo); }
+
+  .btn{
+    display:block; width:100%; border:none; border-radius:12px;
+    padding:13px 16px; font-size:16px; font-weight:700; text-align:center;
+  }
+  .btn.primario{ background:var(--sol-fuerte); color:#FFF8EC; }
+  :root[data-theme="dark"] .btn.primario{ color:#241B08; }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .btn.primario{ color:#241B08; }
+  }
+  .btn.secundario{
+    background:none; border:1.5px solid var(--linea); color:var(--tinta);
+  }
+  .btn.chico{ width:auto; padding:8px 14px; font-size:14px; border-radius:10px; }
+  .btn.aprobar{ background:var(--verde); color:#F2FFF7; }
+  .btn.rechazar{ background:none; border:1.5px solid var(--rojo); color:var(--rojo); }
+  .acciones{ display:flex; gap:8px; margin-top:10px; }
+  .acciones .btn{ flex:1; }
+
+  .campo{ margin-bottom:13px; }
+  .campo label{
+    display:block; font-size:12.5px; font-weight:700; margin-bottom:5px;
+    color:var(--tinta-2); text-transform:uppercase; letter-spacing:.05em;
+  }
+  .campo input, .campo select, .campo textarea{
+    width:100%; background:var(--papel); border:1.5px solid var(--linea);
+    border-radius:10px; padding:11px 12px; font-size:15px;
+  }
+  .campo textarea{ resize:vertical; min-height:64px; }
+  .dos{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+  .tareas{ display:flex; flex-wrap:wrap; gap:8px; }
+  .tarea{
+    border:1.5px solid var(--linea); background:var(--papel); color:var(--tinta);
+    border-radius:999px; padding:7px 14px; font-size:14px;
+  }
+  .tarea.on{ background:var(--sol-suave); border-color:var(--sol); font-weight:700; }
+
+  .segmento{
+    display:grid; grid-template-columns:1fr 1fr; background:var(--papel-2);
+    border-radius:10px; padding:3px; margin-bottom:12px;
+  }
+  .segmento button{
+    border:none; background:none; padding:8px; border-radius:8px;
+    font-size:13.5px; color:var(--tinta-2);
+  }
+  .segmento button.on{
+    background:var(--carta); color:var(--tinta); font-weight:700;
+    box-shadow:0 1px 3px rgba(0,0,0,.12);
+  }
+
+  .resumen-calc{
+    background:var(--sol-suave); border-radius:10px; padding:10px 14px;
+    font-size:14.5px; margin:14px 0; text-align:center;
+  }
+  .resumen-calc b{ font-variant-numeric:tabular-nums; }
+
+  .entrada{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    padding:12px 2px; border-bottom:1px solid var(--linea);
+  }
+  .entrada:last-child{ border-bottom:none; }
+  .entrada .que{ font-size:14.5px; }
+  .entrada .cuando{ font-size:12.5px; color:var(--tinta-2); }
+  .entrada button.link{
+    background:none; border:none; padding:0; text-align:left; color:inherit;
+    display:block; width:100%;
+  }
+
+  .aviso{
+    font-size:13px; color:var(--tinta-2); background:var(--papel-2);
+    border-radius:10px; padding:9px 12px; margin-top:12px;
+  }
+
+  /* Historial / bitacora */
+  .linea-tiempo{ list-style:none; margin:14px 0 0; padding:0; }
+  .evento{
+    position:relative; padding:0 0 18px 26px;
+    border-left:2px solid var(--linea); margin-left:8px;
+  }
+  .evento:last-child{ padding-bottom:2px; border-left-color:transparent; }
+  .evento::before{
+    content:""; position:absolute; left:-7px; top:2px;
+    width:12px; height:12px; border-radius:50%;
+    background:var(--carta); border:3px solid var(--sol);
+  }
+  .evento.neutro::before{ border-color:var(--espera); }
+  .evento.bien::before{ border-color:var(--verde); }
+  .evento.mal::before{ border-color:var(--rojo); }
+  .evento .cuando{ font-size:12px; color:var(--tinta-2); font-variant-numeric:tabular-nums; }
+  .evento .que{ font-size:14.5px; margin-top:1px; }
+  .evento .motivo{
+    font-size:13.5px; font-style:italic; color:var(--tinta-2);
+    border-left:3px solid var(--linea); padding-left:9px; margin-top:5px;
+  }
+
+  /* Reporte */
+  .banner-cierre{
+    background:var(--sol-suave); border-radius:var(--radio);
+    padding:12px 14px; font-size:14px; margin-bottom:12px;
+  }
+  .banner-cierre b{ display:block; font-size:15px; }
+  .tabla-wrap{ overflow-x:auto; border:1px solid var(--linea); border-radius:12px; }
+  table{ border-collapse:collapse; width:100%; font-size:13.5px; }
+  th,td{ padding:8px 10px; text-align:left; white-space:nowrap; }
+  th{
+    font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--tinta-2); border-bottom:1px solid var(--linea);
+    background:var(--papel);
+  }
+  td{ border-bottom:1px solid var(--linea); font-variant-numeric:tabular-nums; }
+  tr:last-child td{ border-bottom:none; }
+  .total-final{
+    display:flex; justify-content:space-between; align-items:center;
+    background:var(--tinta); color:var(--papel); border-radius:12px;
+    padding:13px 16px; margin:12px 0; font-size:16px;
+  }
+  .total-final b{ font-size:20px; font-variant-numeric:tabular-nums; }
+
+  .adjunto{
+    display:flex; align-items:center; gap:10px; padding:10px 2px;
+    border-bottom:1px solid var(--linea); font-size:14px;
+  }
+  .adjunto:last-of-type{ border-bottom:none; }
+  .adjunto .icono{
+    width:34px; height:34px; border-radius:8px; background:var(--sol-suave);
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px; font-weight:700; color:var(--sol-fuerte); flex-shrink:0;
+  }
+  .adjunto .meta{ flex:1; min-width:0; }
+  .adjunto .meta .sub{ font-size:12px; color:var(--tinta-2); }
+  .adjunto .descargar{
+    background:none; border:1.5px solid var(--linea); border-radius:8px;
+    padding:6px 10px; font-size:12.5px; color:var(--tinta); white-space:nowrap;
+  }
+
+  .titulo-seccion{
+    font-size:12px; text-transform:uppercase; letter-spacing:.07em;
+    color:var(--tinta-2); margin:18px 0 8px; font-weight:700;
+  }
+
+  /* Subida de foto */
+  .zona-foto{
+    border:2px dashed var(--linea); border-radius:12px; padding:22px 14px;
+    text-align:center; color:var(--tinta-2); font-size:14px; background:var(--papel);
+  }
+  .zona-foto b{ color:var(--sol-fuerte); }
+
+  /* Toast */
+  .toast{
+    position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px);
+    background:var(--tinta); color:var(--papel); border-radius:12px;
+    padding:12px 18px; font-size:14.5px; max-width:min(92vw,420px);
+    opacity:0; pointer-events:none; transition:opacity .25s, transform .25s;
+    box-shadow:var(--sombra); z-index:60; text-align:center;
+  }
+  .toast.visible{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  /* Modal rechazo */
+  .velo{
+    position:fixed; inset:0; background:rgba(20,14,5,.5);
+    display:none; align-items:center; justify-content:center; z-index:50; padding:20px;
+  }
+  .velo.abierto{ display:flex; }
+  .modal{
+    background:var(--carta); border-radius:16px; padding:20px;
+    width:min(92vw,360px); box-shadow:var(--sombra);
+  }
+  .modal h3{ margin:0 0 4px; font-size:17px; }
+  .modal p{ margin:0 0 12px; font-size:13.5px; color:var(--tinta-2); }
+  .modal .error{ color:var(--rojo); font-size:13px; margin:6px 0 0; display:none; }
+
+  @media (prefers-reduced-motion: reduce){
+    .toast{ transition:none; }
+  }
+  @media (max-width:520px){
+    .telefono{ border-radius:18px; height:auto; min-height:80vh; }
+    .kpis{ grid-template-columns:repeat(3,1fr); }
+  }
+</style>
+
+<div class="shell">
+  <div class="marca">
+    <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+      <circle cx="17" cy="17" r="7.5" fill="var(--sol)"/>
+      <g stroke="var(--sol)" stroke-width="2.4" stroke-linecap="round">
+        <line x1="17" y1="2.5" x2="17" y2="7"/>
+        <line x1="17" y1="27" x2="17" y2="31.5"/>
+        <line x1="2.5" y1="17" x2="7" y2="17"/>
+        <line x1="27" y1="17" x2="31.5" y2="17"/>
+        <line x1="6.8" y1="6.8" x2="10" y2="10"/>
+        <line x1="24" y1="24" x2="27.2" y2="27.2"/>
+        <line x1="27.2" y1="6.8" x2="24" y2="10"/>
+        <line x1="10" y1="24" x2="6.8" y2="27.2"/>
+      </g>
+    </svg>
+    <span class="wordmark">lume<b>a</b></span>
+  </div>
+  <p class="shell-sub">
+    Prototipo navegable de las pantallas principales. Nada se guarda de verdad:
+    tocá los botones para recorrer los flujos como los verían Ana (trabajadora)
+    y Bruno (pagador). Elegí una pantalla o navegá desde adentro de la app.
+  </p>
+
+  <nav class="pantallas" aria-label="Pantallas del prototipo">
+    <button class="chip-nav" data-goto="inicio">Inicio <span class="rol">Ana</span></button>
+    <button class="chip-nav" data-goto="registrar">Registrar horas <span class="rol">Ana</span></button>
+    <button class="chip-nav" data-goto="actividad">Actividad del mes <span class="rol">Ana</span></button>
+    <button class="chip-nav" data-goto="gasto">Registrar gasto <span class="rol">Ana</span></button>
+    <button class="chip-nav" data-goto="aprobar">Aprobaciones <span class="rol">Bruno</span></button>
+    <button class="chip-nav" data-goto="historial">Historial de una entrada <span class="rol">ambos</span></button>
+    <button class="chip-nav" data-goto="reporte">Reporte mensual <span class="rol">ambos</span></button>
+  </nav>
+
+  <div class="nota-pantalla" id="nota" aria-live="polite"></div>
+
+  <div class="escenario">
+    <div class="telefono">
+      <div class="statusbar"><span id="hora-status">10:42</span><span>Lumea</span><span>●●●</span></div>
+      <div class="app">
+
+        <!-- ============ INICIO (Ana) ============ -->
+        <section class="screen activa" id="s-inicio">
+          <div class="app-head">
+            <h1>Hola, Ana</h1>
+            <span class="mini">julio 2026</span>
+          </div>
+          <p class="saludo">Así va tu mes hasta hoy, martes 7 de julio.</p>
+
+          <div class="card">
+            <div class="fila">
+              <div>
+                <h3>Casa de Bruno</h3>
+                <div class="sub">Limpieza · $ 290 por hora</div>
+              </div>
+              <span class="chip esp">1 pendiente</span>
+            </div>
+            <div class="kpis">
+              <div class="kpi"><div class="v num">12,5 h</div><div class="k">horas</div></div>
+              <div class="kpi"><div class="v num">$ 3.625</div><div class="k">del mes</div></div>
+              <div class="kpi"><div class="v num">1</div><div class="k">gasto</div></div>
+            </div>
+            <button class="btn secundario chico" data-goto="actividad">Ver actividad</button>
+          </div>
+
+          <div class="card">
+            <div class="fila">
+              <div>
+                <h3>Familia Silva</h3>
+                <div class="sub">Niñera · $ 310 por hora</div>
+              </div>
+              <span class="chip ok">al día</span>
+            </div>
+            <div class="kpis">
+              <div class="kpi"><div class="v num">8 h</div><div class="k">horas</div></div>
+              <div class="kpi"><div class="v num">$ 2.480</div><div class="k">del mes</div></div>
+              <div class="kpi"><div class="v num">0</div><div class="k">gastos</div></div>
+            </div>
+          </div>
+
+          <button class="btn primario" data-goto="registrar">Registrar horas de hoy</button>
+
+          <div class="titulo-seccion">Novedades</div>
+          <div class="entrada">
+            <div>
+              <div class="que">Bruno aprobó tus 5 horas del viernes 3</div>
+              <div class="cuando">ayer 20:15 · Casa de Bruno</div>
+            </div>
+            <span class="chip ok">aprobada</span>
+          </div>
+          <div class="entrada">
+            <div>
+              <div class="que">El reporte de junio ya está listo</div>
+              <div class="cuando">05/07 23:59 · Casa de Bruno</div>
+            </div>
+            <button class="btn secundario chico" data-goto="reporte">Verlo</button>
+          </div>
+        </section>
+
+        <!-- ============ REGISTRAR HORAS (Ana) ============ -->
+        <section class="screen" id="s-registrar">
+          <div class="app-head"><h1>Registrar horas</h1></div>
+          <p class="saludo">Cargalo en menos de 30 segundos. Bruno recibe un aviso para aprobar.</p>
+
+          <div class="campo">
+            <label for="f-acuerdo">Acuerdo</label>
+            <select id="f-acuerdo">
+              <option>Casa de Bruno · Limpieza ($ 290/h)</option>
+              <option>Familia Silva · Niñera ($ 310/h)</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="f-fecha">Día trabajado</label>
+            <input type="date" id="f-fecha" value="2026-07-07">
+          </div>
+
+          <div class="segmento" role="tablist" aria-label="Forma de cargar el tiempo">
+            <button class="on" id="seg-rango" type="button">Inicio y fin</button>
+            <button id="seg-duracion" type="button">Solo duración</button>
+          </div>
+
+          <div class="dos" id="campos-rango">
+            <div class="campo">
+              <label for="f-inicio">Empezaste</label>
+              <input type="time" id="f-inicio" value="09:00">
+            </div>
+            <div class="campo">
+              <label for="f-fin">Terminaste</label>
+              <input type="time" id="f-fin" value="13:00">
+            </div>
+          </div>
+          <div class="campo" id="campo-duracion" hidden>
+            <label for="f-horas">Horas trabajadas</label>
+            <input type="number" id="f-horas" value="4" min="0.5" step="0.5">
+          </div>
+
+          <div class="campo">
+            <label>¿Qué hiciste?</label>
+            <div class="tareas" id="tareas">
+              <button type="button" class="tarea on">Limpieza general</button>
+              <button type="button" class="tarea">Planchado</button>
+              <button type="button" class="tarea">Cocina a fondo</button>
+              <button type="button" class="tarea">Vidrios</button>
+              <button type="button" class="tarea">Otra</button>
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="f-nota">Nota (opcional)</label>
+            <textarea id="f-nota" placeholder="Ej.: también ordené el garaje"></textarea>
+          </div>
+
+          <div class="resumen-calc" id="calculo">
+            4 horas × $ 290 = <b>$ 1.160</b>
+          </div>
+
+          <button class="btn primario" id="btn-registrar">Registrar 4 horas</button>
+          <p class="aviso">
+            Queda <b>pendiente</b> hasta que Bruno la apruebe. Recién ahí cuenta
+            para el pago del mes.
+          </p>
+        </section>
+
+        <!-- ============ ACTIVIDAD DEL MES (Ana) ============ -->
+        <section class="screen" id="s-actividad">
+          <div class="app-head">
+            <h1>Julio 2026</h1>
+            <span class="mini">Casa de Bruno</span>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi"><div class="v num">12,5 h</div><div class="k">horas</div></div>
+            <div class="kpi"><div class="v num">$ 3.625</div><div class="k">por horas</div></div>
+            <div class="kpi"><div class="v num">$ 420</div><div class="k">gastos</div></div>
+          </div>
+
+          <div class="segmento">
+            <button class="on" type="button">Horas</button>
+            <button type="button" data-goto="gasto">Gastos</button>
+          </div>
+
+          <div class="entrada">
+            <button class="link" data-goto="historial">
+              <div class="que">Lunes 6 · 09:00 a 13:00 · Limpieza general</div>
+              <div class="cuando">4 h · $ 1.160 · registraste vos, ayer 13:05 — tocá para ver el historial</div>
+            </button>
+            <span class="chip esp">pendiente</span>
+          </div>
+          <div class="entrada">
+            <button class="link" data-goto="historial">
+              <div class="que">Viernes 3 · 09:00 a 14:00 · Limpieza profunda</div>
+              <div class="cuando">5 h · $ 1.450 · aprobó Bruno ayer 20:15</div>
+            </button>
+            <span class="chip ok">aprobada</span>
+          </div>
+          <div class="entrada">
+            <button class="link" data-goto="historial">
+              <div class="que">Miércoles 1 · 14:00 a 17:30 · Planchado y limpieza</div>
+              <div class="cuando">3,5 h · $ 1.015 · aprobó Bruno el 02/07</div>
+            </button>
+            <span class="chip ok">aprobada</span>
+          </div>
+
+          <p class="aviso">
+            Las horas <b>pendientes</b> no suman al pago hasta que Bruno las apruebe.
+            El mes se cierra solo el <b>5 de agosto</b>; antes te mandamos recordatorios.
+          </p>
+
+          <button class="btn primario" data-goto="registrar" style="margin-top:12px">Registrar más horas</button>
+        </section>
+
+        <!-- ============ REGISTRAR GASTO (Ana) ============ -->
+        <section class="screen" id="s-gasto">
+          <div class="app-head"><h1>Registrar gasto</h1></div>
+          <p class="saludo">Compraste algo para el trabajo. Bruno lo revisa antes de sumarlo al mes.</p>
+
+          <div class="campo">
+            <label for="g-acuerdo">Acuerdo</label>
+            <select id="g-acuerdo"><option>Casa de Bruno · Limpieza</option></select>
+          </div>
+          <div class="dos">
+            <div class="campo">
+              <label for="g-monto">Monto</label>
+              <input type="number" id="g-monto" value="420" min="1">
+            </div>
+            <div class="campo">
+              <label for="g-fecha">Fecha</label>
+              <input type="date" id="g-fecha" value="2026-07-03">
+            </div>
+          </div>
+          <div class="campo">
+            <label for="g-desc">¿Qué compraste?</label>
+            <input type="text" id="g-desc" value="Productos de limpieza (detergente, esponjas)">
+          </div>
+          <div class="campo">
+            <label>Foto del comprobante</label>
+            <div class="zona-foto">
+              <b>Sacá una foto</b> o subí un archivo<br>
+              JPG, PNG o PDF · queda guardado de forma privada
+            </div>
+          </div>
+
+          <button class="btn primario" id="btn-gasto">Enviar para aprobación</button>
+          <p class="aviso">Bruno recibe un aviso con la foto y el monto para aprobar o rechazar.</p>
+        </section>
+
+        <!-- ============ APROBACIONES (Bruno) ============ -->
+        <section class="screen" id="s-aprobar">
+          <div class="app-head">
+            <h1>Para aprobar</h1>
+            <span class="mini">Bruno · Casa de Bruno</span>
+          </div>
+          <p class="saludo" id="txt-pendientes">Ana registró 2 cosas que esperan tu revisión.</p>
+
+          <button class="btn secundario" id="btn-lote">Aprobar todo lo pendiente (2)</button>
+
+          <div class="card" id="pend-1" style="margin-top:12px">
+            <div class="fila">
+              <div>
+                <h3 class="num">4 horas · $ 1.160</h3>
+                <div class="sub">Lunes 6 de julio · 09:00 a 13:00 · Limpieza general</div>
+              </div>
+              <span class="chip esp" id="chip-1">pendiente</span>
+            </div>
+            <div class="acciones" id="acc-1">
+              <button class="btn chico aprobar" data-aprobar="1">Aprobar</button>
+              <button class="btn chico rechazar" data-rechazar="1">Rechazar</button>
+            </div>
+          </div>
+
+          <div class="card" id="pend-2">
+            <div class="fila">
+              <div>
+                <h3 class="num">Gasto · $ 420</h3>
+                <div class="sub">Viernes 3 de julio · Productos de limpieza · con foto del comprobante</div>
+              </div>
+              <span class="chip esp" id="chip-2">pendiente</span>
+            </div>
+            <div class="acciones" id="acc-2">
+              <button class="btn chico aprobar" data-aprobar="2">Aprobar</button>
+              <button class="btn chico rechazar" data-rechazar="2">Rechazar</button>
+            </div>
+          </div>
+
+          <p class="aviso">
+            Si rechazás, tenés que <b>explicar el motivo</b>: Ana lo ve, puede corregir
+            y volver a enviar. Todo queda en el historial.
+          </p>
+        </section>
+
+        <!-- ============ HISTORIAL (explicabilidad) ============ -->
+        <section class="screen" id="s-historial">
+          <div class="app-head"><h1>Historial</h1></div>
+
+          <div class="card">
+            <div class="fila">
+              <div>
+                <h3 class="num">3,5 horas · $ 1.015</h3>
+                <div class="sub">Miércoles 1 de julio · 14:00 a 17:30 · Planchado y limpieza</div>
+              </div>
+              <span class="chip ok">aprobada</span>
+            </div>
+          </div>
+
+          <div class="titulo-seccion">Cada paso, guardado</div>
+          <ul class="linea-tiempo">
+            <li class="evento">
+              <div class="cuando">01/07 · 21:03</div>
+              <div class="que"><b>Ana registró 4 horas</b> (14:00 a 18:00), Planchado y limpieza.</div>
+            </li>
+            <li class="evento mal">
+              <div class="cuando">02/07 · 07:58</div>
+              <div class="que"><b>Bruno rechazó</b> la entrada.</div>
+              <div class="motivo">“Ese día saliste 17:30, lo vi al llegar. ¿Lo corregís?”</div>
+            </li>
+            <li class="evento neutro">
+              <div class="cuando">02/07 · 08:05</div>
+              <div class="que"><b>Ana editó la entrada</b>: fin 18:00 → 17:30 (3,5 h). Volvió a pendiente.</div>
+            </li>
+            <li class="evento bien">
+              <div class="cuando">02/07 · 08:12</div>
+              <div class="que"><b>Bruno aprobó</b> la entrada. Importe fijado: 3,5 h × $ 290 = $ 1.015.</div>
+            </li>
+            <li class="evento neutro">
+              <div class="cuando">02/07 · 08:12</div>
+              <div class="que"><b>Aviso enviado</b> a Ana por correo: “Bruno aprobó tus horas”.</div>
+            </li>
+          </ul>
+
+          <p class="aviso">
+            El historial <b>no se puede borrar ni editar</b>. Es la garantía de que
+            cada número de Lumea se puede explicar.
+          </p>
+          <button class="btn secundario" data-goto="actividad" style="margin-top:12px">Volver a la actividad</button>
+        </section>
+
+        <!-- ============ REPORTE MENSUAL (cerrado) ============ -->
+        <section class="screen" id="s-reporte">
+          <div class="app-head">
+            <h1>Junio 2026</h1>
+            <span class="mini">Casa de Bruno</span>
+          </div>
+
+          <div class="banner-cierre">
+            <b>Mes cerrado el 05/07/2026</b>
+            Reporte definitivo · cierre N.º C-2026-06-A14 · no se modifica más.
+          </div>
+
+          <div class="kpis">
+            <div class="kpi"><div class="v num">42,5 h</div><div class="k">horas</div></div>
+            <div class="kpi"><div class="v num">$ 11.900</div><div class="k">por horas</div></div>
+            <div class="kpi"><div class="v num">$ 640</div><div class="k">gastos</div></div>
+          </div>
+
+          <div class="total-final">
+            <span>Total a pagar</span>
+            <b>$ 12.540</b>
+          </div>
+
+          <div class="titulo-seccion">Detalle por día</div>
+          <div class="tabla-wrap">
+            <table>
+              <thead>
+                <tr><th>Día</th><th>Horas</th><th>Tarea</th><th>Importe</th><th>Aprobó</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Lun 29/06</td><td>4 h</td><td>Limpieza general</td><td>$ 1.120</td><td>Bruno · 30/06</td></tr>
+                <tr><td>Vie 26/06</td><td>5 h</td><td>Limpieza profunda</td><td>$ 1.400</td><td>Bruno · 26/06</td></tr>
+                <tr><td>Mié 24/06</td><td>3,5 h</td><td>Planchado</td><td>$ 980</td><td>Bruno · 25/06</td></tr>
+                <tr><td colspan="5">… y 9 días más (tarifa de junio: $ 280/h)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="titulo-seccion">No incluidas en este total</div>
+          <div class="entrada">
+            <div>
+              <div class="que">Martes 30/06 · 2 h · Limpieza general</div>
+              <div class="cuando">seguía pendiente al cierre · si se resuelve, sale en una adenda</div>
+            </div>
+            <span class="chip esp">pendiente</span>
+          </div>
+
+          <div class="titulo-seccion">Documentos del mes</div>
+          <div id="lista-adjuntos">
+            <div class="adjunto">
+              <div class="icono">PDF</div>
+              <div class="meta">
+                Factura junio 2026
+                <div class="sub">subió Ana · 06/07 · 118 KB</div>
+              </div>
+              <button class="descargar" type="button">Descargar</button>
+            </div>
+          </div>
+          <button class="btn secundario" id="btn-adjuntar" style="margin-top:10px">
+            Agregar documento (PDF o imagen)
+          </button>
+
+          <button class="btn primario" id="btn-pdf" style="margin-top:14px">Descargar reporte (PDF)</button>
+          <p class="aviso">
+            Al cerrar el mes, Ana y Bruno recibieron el mismo reporte por correo.
+            Los documentos quedan guardados acá para descargarlos cuando haga falta.
+          </p>
+        </section>
+
+        <!-- ============ TABS ============ -->
+        <nav class="tabs" aria-label="Navegación de la app">
+          <button data-goto="inicio" class="activa" id="tab-inicio">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9h13v-9"/></svg>
+            Inicio
+          </button>
+          <button data-goto="registrar" id="tab-registrar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8.5V12l2.5 2"/></svg>
+            Registrar
+          </button>
+          <button data-goto="actividad" id="tab-actividad">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 19V9m5.3 10V5m5.4 14v-7M20 19V8"/></svg>
+            Actividad
+          </button>
+          <button data-goto="reporte" id="tab-reporte">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7.5L19 8v12.5H7z"/><path d="M14 3.5V8h4.5"/><path d="M9.5 13h5m-5 3.5h5"/></svg>
+            Reportes
+          </button>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de rechazo -->
+<div class="velo" id="velo" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+  <div class="modal">
+    <h3 id="modal-titulo">¿Por qué la rechazás?</h3>
+    <p>Ana va a ver este motivo y puede corregir la entrada. Es obligatorio.</p>
+    <div class="campo">
+      <textarea id="motivo" placeholder="Ej.: ese día terminaste 17:30, no 18:00"></textarea>
+      <div class="error" id="error-motivo">Escribí el motivo para poder rechazar.</div>
+    </div>
+    <div class="acciones">
+      <button class="btn chico secundario" id="btn-cancelar-rechazo">Cancelar</button>
+      <button class="btn chico rechazar" id="btn-confirmar-rechazo">Rechazar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+  // ===== Notas por pantalla (para quien revisa el prototipo) =====
+  var NOTAS = {
+    inicio:    "<b>Inicio (vista de Ana, trabajadora).</b> Resumen por acuerdo con lo ganado en el mes y lo pendiente. La acción principal —registrar horas— está siempre a un toque.",
+    registrar: "<b>Registrar horas.</b> El objetivo del SDD: cargar una jornada en menos de 30 segundos. Se puede cargar por inicio/fin o solo duración, y el importe se calcula a la vista.",
+    actividad: "<b>Actividad del mes.</b> Cada entrada muestra su estado (aprobada / pendiente / rechazada) y quién actuó. Tocá una entrada para ver su historial completo.",
+    gasto:     "<b>Registrar gasto.</b> Monto + foto del comprobante. Va a aprobación del pagador igual que las horas.",
+    aprobar:   "<b>Aprobaciones (vista de Bruno, pagador).</b> Aprobar de a una o todo junto (lote). Probá rechazar: el motivo es obligatorio, como pide el SDD. Toda acción notifica a la otra parte.",
+    historial: "<b>Historial de una entrada.</b> La explicabilidad del SDD hecha pantalla: bitácora inmutable con registro, rechazo con motivo, corrección y aprobación final.",
+    reporte:   "<b>Reporte mensual cerrado.</b> Instantánea inmutable: totales, detalle por día con quién aprobó, lo no incluido, y los documentos de facturación (PDF o imagen) para descargar. Probá «Agregar documento»."
+  };
+
+  var nota = document.getElementById("nota");
+  var toast = document.getElementById("toast");
+  var toastTimer = null;
+
+  function avisar(msg){
+    toast.textContent = msg;
+    toast.classList.add("visible");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove("visible"); }, 3200);
+  }
+
+  function irA(id){
+    var screens = document.querySelectorAll(".screen");
+    for (var i = 0; i < screens.length; i++) screens[i].classList.remove("activa");
+    var destino = document.getElementById("s-" + id);
+    if (!destino) return;
+    destino.classList.add("activa");
+    destino.scrollTop = 0;
+
+    var chips = document.querySelectorAll(".chip-nav");
+    for (var j = 0; j < chips.length; j++){
+      chips[j].setAttribute("aria-current", chips[j].getAttribute("data-goto") === id ? "true" : "false");
+    }
+    var tabs = document.querySelectorAll(".tabs button");
+    for (var k = 0; k < tabs.length; k++){
+      tabs[k].classList.toggle("activa", tabs[k].getAttribute("data-goto") === id);
+    }
+    nota.innerHTML = NOTAS[id] || "";
+  }
+
+  // Navegación: cualquier elemento con data-goto
+  document.addEventListener("click", function(ev){
+    var el = ev.target.closest("[data-goto]");
+    if (el){ irA(el.getAttribute("data-goto")); }
+  });
+
+  // ===== Registrar horas: cálculo en vivo =====
+  var TARIFAS = [290, 310];
+  var fInicio = document.getElementById("f-inicio");
+  var fFin = document.getElementById("f-fin");
+  var fHoras = document.getElementById("f-horas");
+  var fAcuerdo = document.getElementById("f-acuerdo");
+  var segRango = document.getElementById("seg-rango");
+  var segDuracion = document.getElementById("seg-duracion");
+  var camposRango = document.getElementById("campos-rango");
+  var campoDuracion = document.getElementById("campo-duracion");
+  var calculo = document.getElementById("calculo");
+  var btnRegistrar = document.getElementById("btn-registrar");
+  var modoRango = true;
+
+  function pesos(n){
+    return "$ " + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+  function horasTexto(h){
+    return (h % 1 === 0 ? h : h.toFixed(1).replace(".", ",")) + " " + (h === 1 ? "hora" : "horas");
+  }
+  function horasActuales(){
+    if (modoRango){
+      var partes1 = fInicio.value.split(":"), partes2 = fFin.value.split(":");
+      var min = (parseInt(partes2[0],10)*60 + parseInt(partes2[1],10)) -
+                (parseInt(partes1[0],10)*60 + parseInt(partes1[1],10));
+      return Math.max(min, 0) / 60;
+    }
+    return parseFloat(fHoras.value) || 0;
+  }
+  function actualizarCalculo(){
+    var h = horasActuales();
+    var tarifa = TARIFAS[fAcuerdo.selectedIndex];
+    calculo.innerHTML = horasTexto(h) + " × " + pesos(tarifa) + " = <b>" + pesos(h * tarifa) + "</b>";
+    btnRegistrar.textContent = "Registrar " + horasTexto(h);
+  }
+  segRango.addEventListener("click", function(){
+    modoRango = true;
+    segRango.classList.add("on"); segDuracion.classList.remove("on");
+    camposRango.hidden = false; campoDuracion.hidden = true;
+    actualizarCalculo();
+  });
+  segDuracion.addEventListener("click", function(){
+    modoRango = false;
+    segDuracion.classList.add("on"); segRango.classList.remove("on");
+    camposRango.hidden = true; campoDuracion.hidden = false;
+    actualizarCalculo();
+  });
+  [fInicio, fFin, fHoras, fAcuerdo].forEach(function(el){
+    el.addEventListener("input", actualizarCalculo);
+    el.addEventListener("change", actualizarCalculo);
+  });
+  actualizarCalculo();
+
+  btnRegistrar.addEventListener("click", function(){
+    avisar("Listo: quedó registrado. Le avisamos a Bruno para que lo apruebe.");
+    irA("actividad");
+  });
+
+  // Chips de tarea
+  document.getElementById("tareas").addEventListener("click", function(ev){
+    var t = ev.target.closest(".tarea");
+    if (t) t.classList.toggle("on");
+  });
+
+  // ===== Gasto =====
+  document.getElementById("btn-gasto").addEventListener("click", function(){
+    avisar("Gasto enviado. Bruno recibió un aviso para revisarlo.");
+    irA("actividad");
+  });
+
+  // ===== Aprobaciones (Bruno) =====
+  var pendientes = { 1: true, 2: true };
+  var rechazando = null;
+  var velo = document.getElementById("velo");
+  var motivo = document.getElementById("motivo");
+  var errorMotivo = document.getElementById("error-motivo");
+
+  function contarPendientes(){
+    var n = (pendientes[1] ? 1 : 0) + (pendientes[2] ? 1 : 0);
+    var btnLote = document.getElementById("btn-lote");
+    var txt = document.getElementById("txt-pendientes");
+    if (n === 0){
+      btnLote.disabled = true;
+      btnLote.textContent = "Nada pendiente por aprobar";
+      btnLote.style.opacity = ".55";
+      txt.textContent = "Estás al día con Ana. Todo revisado.";
+    } else {
+      btnLote.textContent = "Aprobar todo lo pendiente (" + n + ")";
+      txt.textContent = "Ana registró " + n + (n === 1 ? " cosa que espera" : " cosas que esperan") + " tu revisión.";
+    }
+  }
+
+  function resolver(id, estado, textoChip){
+    pendientes[id] = false;
+    var chip = document.getElementById("chip-" + id);
+    chip.textContent = textoChip;
+    chip.className = "chip " + estado;
+    document.getElementById("acc-" + id).style.display = "none";
+    contarPendientes();
+  }
+
+  document.addEventListener("click", function(ev){
+    var a = ev.target.closest("[data-aprobar]");
+    if (a){
+      resolver(a.getAttribute("data-aprobar"), "ok", "aprobada");
+      avisar("Aprobado. Ana ya recibió el aviso.");
+      return;
+    }
+    var r = ev.target.closest("[data-rechazar]");
+    if (r){
+      rechazando = r.getAttribute("data-rechazar");
+      motivo.value = "";
+      errorMotivo.style.display = "none";
+      velo.classList.add("abierto");
+      motivo.focus();
+    }
+  });
+
+  document.getElementById("btn-cancelar-rechazo").addEventListener("click", function(){
+    velo.classList.remove("abierto");
+    rechazando = null;
+  });
+  document.getElementById("btn-confirmar-rechazo").addEventListener("click", function(){
+    if (!motivo.value.trim()){
+      errorMotivo.style.display = "block";
+      motivo.focus();
+      return;
+    }
+    velo.classList.remove("abierto");
+    if (rechazando) resolver(rechazando, "no", "rechazada");
+    rechazando = null;
+    avisar("Rechazado. Ana ve tu motivo y puede corregir y reenviar.");
+  });
+
+  document.getElementById("btn-lote").addEventListener("click", function(){
+    var n = 0;
+    if (pendientes[1]){ resolver(1, "ok", "aprobada"); n++; }
+    if (pendientes[2]){ resolver(2, "ok", "aprobada"); n++; }
+    if (n > 0){
+      avisar("Lote aprobado: " + n + (n === 1 ? " entrada" : " entradas") + ". Ana y vos recibieron el resumen.");
+    }
+  });
+
+  // ===== Reporte: agregar documento =====
+  document.getElementById("btn-adjuntar").addEventListener("click", function(){
+    var fila = document.createElement("div");
+    fila.className = "adjunto";
+    fila.innerHTML =
+      '<div class="icono">JPG</div>' +
+      '<div class="meta">Comprobante de pago' +
+      '<div class="sub">subió Bruno · recién · 240 KB</div></div>' +
+      '<button class="descargar" type="button">Descargar</button>';
+    document.getElementById("lista-adjuntos").appendChild(fila);
+    avisar("Documento agregado al cierre. Ana recibió el aviso y puede descargarlo.");
+    this.disabled = true;
+    this.style.opacity = ".55";
+    this.textContent = "Documento agregado (demo)";
+  });
+  document.getElementById("btn-pdf").addEventListener("click", function(){
+    avisar("En la app real acá se descarga el PDF del reporte cerrado.");
+  });
+
+  // Botones de descarga (demo)
+  document.addEventListener("click", function(ev){
+    if (ev.target.closest(".descargar")){
+      avisar("En la app real acá se descarga el archivo desde el almacenamiento privado.");
+    }
+  });
+
+  // Hora del statusbar
+  var ahora = new Date();
+  document.getElementById("hora-status").textContent =
+    String(ahora.getHours()).padStart(2, "0") + ":" + String(ahora.getMinutes()).padStart(2, "0");
+
+  // Estado inicial
+  irA("inicio");
+</script>
