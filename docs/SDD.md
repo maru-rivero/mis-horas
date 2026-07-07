@@ -33,7 +33,7 @@ Estas son las reglas que gobiernan todas las decisiones de diseño, en orden de 
 
 ### 1.3 Alcance de la versión 1 (MVP)
 
-**Incluye**: registro de horas, registro de gastos con comprobante, flujo de aprobación bilateral (individual y por lote), cierre mensual automático, reporte mensual, notificaciones por correo electrónico.
+**Incluye**: registro de horas, registro de gastos con comprobante, flujo de aprobación bilateral (individual y por lote), cierre mensual automático, reporte mensual, documentos de facturación adjuntos al cierre (PDF o imagen), notificaciones por correo electrónico.
 
 **No incluye (fases posteriores)**: notificaciones push web (fase 2), WhatsApp (fase 3), aplicaciones nativas, pagos dentro de la aplicación, cálculos de aportes a BPS o aguinaldo.
 
@@ -88,6 +88,7 @@ Una persona trabajadora puede tener varios acuerdos (varias casas), y una person
 | RF-10 | Notificaciones por correo para cada evento relevante (ver §7). |
 | RF-11 | Historial visible por entrada y por acuerdo: cada acción con actor, fecha/hora y motivo. |
 | RF-12 | Cambio de tarifa con fecha de vigencia, propuesto por una parte y aceptado por la otra. |
+| RF-13 | Adjuntar al cierre mensual el documento de facturación o cobro (PDF o imagen: factura, recibo, comprobante de pago), por cualquiera de las dos partes; descargable por ambas en cualquier momento posterior. Cada adjunto queda registrado en la bitácora y notifica a la contraparte. |
 
 ## 4. Requisitos no funcionales
 
@@ -189,6 +190,10 @@ eventos             (id, entidad_tipo, entidad_id, acuerdo_id, actor_id, accion,
                      -- SOLO INSERTAR: sin UPDATE ni DELETE (política de BD)
 cierres_mensuales   (id, acuerdo_id, anio_mes, cerrado_en, total_horas, total_importe,
                      total_gastos, instantanea jsonb, es_adenda, adenda_de?)
+adjuntos_cierre     (id, cierre_id, tipo ('factura'|'recibo'|'comprobante_pago'|'otro'),
+                     archivo_url, nombre_archivo, formato ('pdf'|'imagen'),
+                     subido_por, creado_en)
+                     -- PDF o imagen (JPG/PNG), bucket privado, descargable por ambas partes
 notificaciones      (id, usuario_id, canal, evento_tipo, payload jsonb,
                      estado_envio, enviado_en)
 ```
@@ -210,6 +215,7 @@ Canal del MVP: **correo electrónico**. Fase 2: push web (PWA). Fase 3: WhatsApp
 | Recordatorio de pendientes (días 1 y 3) | Quien deba actuar | Lista de pendientes del mes que está por cerrar. |
 | **Mes cerrado / reporte listo** | **Ambas partes** | Total del mes y enlace al reporte. |
 | Adenda emitida | Ambas partes | Qué se resolvió después del cierre y nuevo total complementario. |
+| Documento de facturación adjuntado a un cierre | La contraparte | Tipo de documento (factura/recibo/comprobante), quién lo subió y enlace para descargarlo. |
 | Cambio de tarifa propuesto/aceptado | La contraparte / ambas | Tarifa nueva y fecha de vigencia. |
 
 ---
@@ -223,7 +229,8 @@ Contenido del reporte (visible en la aplicación y descargable como PDF):
 3. **Gastos aprobados**: fecha, descripción, monto, enlace al comprobante.
 4. **Totales**: horas del mes, importe por horas, importe por gastos, **total a pagar**.
 5. **No incluidas**: entradas pendientes o rechazadas al cierre, con estado y motivo.
-6. **Nota de trazabilidad**: identificador del cierre e indicación de que el documento es una instantánea inmutable.
+6. **Documentos adjuntos**: facturas, recibos o comprobantes de pago (PDF o imagen) subidos por cualquiera de las partes después del cierre, listados con quién los subió y cuándo, descargables en todo momento. Los adjuntos se agregan al cierre sin modificar la instantánea del reporte.
+7. **Nota de trazabilidad**: identificador del cierre e indicación de que el documento es una instantánea inmutable.
 
 ---
 
@@ -271,6 +278,7 @@ Contenido del reporte (visible en la aplicación y descargable como PDF):
 | D-06 | Cierre de mes | Automático, día 5 del mes siguiente, con recordatorios días 1 y 3 | Pedido explícito de cierre automático; la gracia da tiempo de revisión. |
 | D-07 | Infraestructura | Planes gratuitos (Vercel + Supabase + Resend) | Costo cero de operación al arrancar. |
 | D-08 | Nombre | **Pendiente** — "MisHoras" como título provisorio | En evaluación con la persona dueña del producto. |
+| D-09 | Documentos de facturación | Adjuntos (PDF o imagen) sobre el cierre mensual, subibles por cualquiera de las partes y descargables por ambas | La factura la puede emitir la persona trabajadora y el comprobante de pago la pagadora; el cierre es el lugar natural donde ambas los buscan después. |
 
 ### Preguntas abiertas
 
