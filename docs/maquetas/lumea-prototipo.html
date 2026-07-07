@@ -1,6 +1,6 @@
 <title>Lumea — Prototipo navegable</title>
 <style>
-  /* ===== Tokens ===== */
+  /* ===== Tokens — Sistema 1 "Sol" (por defecto) ===== */
   :root{
     --papel:#FBF7F0;
     --papel-2:#F3ECDF;
@@ -19,6 +19,10 @@
     --espera-suave:#EDE8DE;
     --sombra:0 10px 30px rgba(64,48,20,.14);
     --radio:14px;
+    --fuente:"Trebuchet MS","Segoe UI",system-ui,-apple-system,sans-serif;
+    --btn-texto:#FFF8EC;
+    --cliente-1:#B96A1B;
+    --cliente-2:#2F6BAF;
   }
   @media (prefers-color-scheme: dark){
     :root{
@@ -38,6 +42,9 @@
       --espera:#A79F90;
       --espera-suave:#332D22;
       --sombra:0 10px 30px rgba(0,0,0,.45);
+      --btn-texto:#241B08;
+      --cliente-1:#BF7E1F;
+      --cliente-2:#4C82C4;
     }
   }
   :root[data-theme="dark"]{
@@ -57,6 +64,9 @@
     --espera:#A79F90;
     --espera-suave:#332D22;
     --sombra:0 10px 30px rgba(0,0,0,.45);
+    --btn-texto:#241B08;
+    --cliente-1:#BF7E1F;
+    --cliente-2:#4C82C4;
   }
   :root[data-theme="light"]{
     --papel:#FBF7F0;
@@ -75,6 +85,147 @@
     --espera:#6B665E;
     --espera-suave:#EDE8DE;
     --sombra:0 10px 30px rgba(64,48,20,.14);
+    --btn-texto:#FFF8EC;
+    --cliente-1:#B96A1B;
+    --cliente-2:#2F6BAF;
+  }
+
+  /* ===== Sistema 2 "Faro" — marino, nítido ===== */
+  :root[data-ds="faro"]{
+    --papel:#F1F5F8;
+    --papel-2:#E4EBF1;
+    --carta:#FFFFFF;
+    --tinta:#17242F;
+    --tinta-2:#5A6B7A;
+    --linea:#D3DEE7;
+    --sol:#1F5F8B;
+    --sol-fuerte:#175076;
+    --sol-suave:#D9E7F1;
+    --verde:#2F7D4F;
+    --verde-suave:#DFEEE5;
+    --rojo:#B3372F;
+    --rojo-suave:#F7E2E0;
+    --espera:#5F6B76;
+    --espera-suave:#E7EBEF;
+    --sombra:0 10px 30px rgba(15,40,60,.16);
+    --radio:9px;
+    --fuente:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --btn-texto:#F2F8FD;
+    --cliente-1:#2468A8;
+    --cliente-2:#C96F1E;
+  }
+  @media (prefers-color-scheme: dark){
+    :root[data-ds="faro"]:not([data-theme="light"]){
+      --papel:#16202B;
+      --papel-2:#101820;
+      --carta:#1D2733;
+      --tinta:#E8EEF4;
+      --tinta-2:#93A5B5;
+      --linea:#32424F;
+      --sol:#5C9FD4;
+      --sol-fuerte:#5C9FD4;
+      --sol-suave:#1C3247;
+      --verde:#57B183;
+      --verde-suave:#20372B;
+      --rojo:#E07A72;
+      --rojo-suave:#3F2320;
+      --espera:#9AA8B4;
+      --espera-suave:#28343F;
+      --sombra:0 10px 30px rgba(0,0,0,.5);
+      --btn-texto:#0E1B26;
+      --cliente-1:#4C8CC9;
+      --cliente-2:#C97F35;
+    }
+  }
+  :root[data-ds="faro"][data-theme="dark"]{
+    --papel:#16202B;
+    --papel-2:#101820;
+    --carta:#1D2733;
+    --tinta:#E8EEF4;
+    --tinta-2:#93A5B5;
+    --linea:#32424F;
+    --sol:#5C9FD4;
+    --sol-fuerte:#5C9FD4;
+    --sol-suave:#1C3247;
+    --verde:#57B183;
+    --verde-suave:#20372B;
+    --rojo:#E07A72;
+    --rojo-suave:#3F2320;
+    --espera:#9AA8B4;
+    --espera-suave:#28343F;
+    --sombra:0 10px 30px rgba(0,0,0,.5);
+    --btn-texto:#0E1B26;
+    --cliente-1:#4C8CC9;
+    --cliente-2:#C97F35;
+  }
+
+  /* ===== Sistema 3 "Ventana" — hogareño, suave ===== */
+  :root[data-ds="ventana"]{
+    --papel:#F7F6F0;
+    --papel-2:#EDEBE0;
+    --carta:#FFFFFF;
+    --tinta:#262A20;
+    --tinta-2:#6A6E5C;
+    --linea:#DCDACB;
+    --sol:#5F7A4A;
+    --sol-fuerte:#48613A;
+    --sol-suave:#E4EBD9;
+    --verde:#2F7D4F;
+    --verde-suave:#E0EFE6;
+    --rojo:#B3372F;
+    --rojo-suave:#F7E2E0;
+    --espera:#6B6E5E;
+    --espera-suave:#EBEADF;
+    --sombra:0 10px 30px rgba(45,55,30,.14);
+    --radio:20px;
+    --fuente:Verdana,Geneva,"DejaVu Sans",sans-serif;
+    --btn-texto:#F5F9EF;
+    --cliente-1:#587F2C;
+    --cliente-2:#7D5FB2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root[data-ds="ventana"]:not([data-theme="light"]){
+      --papel:#22261C;
+      --papel-2:#191D14;
+      --carta:#2A2F23;
+      --tinta:#EDEFE4;
+      --tinta-2:#ABB19A;
+      --linea:#414737;
+      --sol:#97B36E;
+      --sol-fuerte:#97B36E;
+      --sol-suave:#333D26;
+      --verde:#57B183;
+      --verde-suave:#233829;
+      --rojo:#E07A72;
+      --rojo-suave:#402220;
+      --espera:#A3A892;
+      --espera-suave:#31352A;
+      --sombra:0 10px 30px rgba(0,0,0,.5);
+      --btn-texto:#1A2112;
+      --cliente-1:#719E41;
+      --cliente-2:#9B7FD0;
+    }
+  }
+  :root[data-ds="ventana"][data-theme="dark"]{
+    --papel:#22261C;
+    --papel-2:#191D14;
+    --carta:#2A2F23;
+    --tinta:#EDEFE4;
+    --tinta-2:#ABB19A;
+    --linea:#414737;
+    --sol:#97B36E;
+    --sol-fuerte:#97B36E;
+    --sol-suave:#333D26;
+    --verde:#57B183;
+    --verde-suave:#233829;
+    --rojo:#E07A72;
+    --rojo-suave:#402220;
+    --espera:#A3A892;
+    --espera-suave:#31352A;
+    --sombra:0 10px 30px rgba(0,0,0,.5);
+    --btn-texto:#1A2112;
+    --cliente-1:#719E41;
+    --cliente-2:#9B7FD0;
   }
 
   /* ===== Base ===== */
@@ -83,7 +234,7 @@
   body{
     background:var(--papel);
     color:var(--tinta);
-    font-family:"Trebuchet MS","Segoe UI",system-ui,-apple-system,sans-serif;
+    font-family:var(--fuente);
     line-height:1.45;
   }
   button{ font:inherit; cursor:pointer; }
@@ -128,6 +279,26 @@
     color:var(--tinta-2); margin-bottom:22px; max-width:760px;
   }
   .nota-pantalla b{ color:var(--tinta); }
+
+  /* ===== Selector de sistema de diseño ===== */
+  .sistemas{
+    display:flex; flex-wrap:wrap; gap:10px; margin-bottom:18px;
+  }
+  .sistema{
+    display:flex; align-items:center; gap:10px; text-align:left;
+    border:1.5px solid var(--linea); background:var(--carta); color:var(--tinta);
+    border-radius:var(--radio); padding:10px 14px; min-width:200px;
+  }
+  .sistema[aria-pressed="true"]{
+    border-color:var(--sol); background:var(--sol-suave);
+  }
+  .sistema .s-nombre{ font-weight:700; font-size:14.5px; display:block; }
+  .sistema .s-desc{ font-size:12px; color:var(--tinta-2); display:block; }
+  .sistema svg{ flex-shrink:0; }
+  .logo-ds{ display:none; }
+  :root:not([data-ds="faro"]):not([data-ds="ventana"]) .marca .l-sol{ display:block; }
+  :root[data-ds="faro"] .marca .l-faro{ display:block; }
+  :root[data-ds="ventana"] .marca .l-ventana{ display:block; }
 
   .escenario{ display:flex; justify-content:center; }
 
@@ -207,11 +378,7 @@
     display:block; width:100%; border:none; border-radius:12px;
     padding:13px 16px; font-size:16px; font-weight:700; text-align:center;
   }
-  .btn.primario{ background:var(--sol-fuerte); color:#FFF8EC; }
-  :root[data-theme="dark"] .btn.primario{ color:#241B08; }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]) .btn.primario{ color:#241B08; }
-  }
+  .btn.primario{ background:var(--sol-fuerte); color:var(--btn-texto); }
   .btn.secundario{
     background:none; border:1.5px solid var(--linea); color:var(--tinta);
   }
@@ -343,6 +510,81 @@
     color:var(--tinta-2); margin:18px 0 8px; font-weight:700;
   }
 
+  /* ===== Gráfico de horas (barras apiladas por cliente) ===== */
+  .grafico-card{
+    background:var(--papel); border:1px solid var(--linea);
+    border-radius:var(--radio); padding:14px; margin-bottom:14px;
+  }
+  .filtros-cliente{
+    display:flex; flex-wrap:wrap; gap:7px; margin-bottom:12px;
+  }
+  .f-cliente{
+    display:inline-flex; align-items:center; gap:6px;
+    border:1.5px solid var(--linea); background:var(--carta); color:var(--tinta);
+    border-radius:999px; padding:5px 12px; font-size:12.5px;
+  }
+  .f-cliente.on{ border-color:var(--tinta-2); background:var(--papel-2); font-weight:700; }
+  .punto{ width:10px; height:10px; border-radius:3px; display:inline-block; flex-shrink:0; }
+  .punto.c1{ background:var(--cliente-1); }
+  .punto.c2{ background:var(--cliente-2); }
+
+  .grafico{
+    position:relative; height:150px; margin:4px 0 2px;
+  }
+  .g-grid{
+    position:absolute; inset:0 0 18px 0; pointer-events:none;
+  }
+  .g-linea{
+    position:absolute; left:0; right:0; border-top:1px solid var(--linea);
+  }
+  .g-linea .g-et{
+    position:absolute; right:0; top:-15px; font-size:10.5px;
+    color:var(--tinta-2); font-variant-numeric:tabular-nums;
+    background:var(--papel); padding-left:4px;
+  }
+  .g-barras{
+    position:absolute; inset:0 0 18px 0;
+    display:flex; align-items:flex-end; gap:3px; padding-right:26px;
+  }
+  .g-dia{
+    flex:1; display:flex; flex-direction:column; justify-content:flex-end;
+    align-items:stretch; height:100%; position:relative; min-width:0;
+  }
+  .g-seg{
+    width:100%; border-radius:0;
+  }
+  .g-seg + .g-seg{ margin-top:2px; }
+  .g-seg.c1{ background:var(--cliente-1); }
+  .g-seg.c2{ background:var(--cliente-2); }
+  .g-dia .g-seg:first-child{ border-radius:4px 4px 0 0; }
+  .g-total{
+    position:absolute; left:0; right:0; text-align:center;
+    font-size:10.5px; font-weight:700; color:var(--tinta-2);
+    font-variant-numeric:tabular-nums; padding-bottom:2px; white-space:nowrap;
+  }
+  .g-ejes{
+    position:absolute; left:0; right:0; bottom:0; height:18px;
+    display:flex; gap:3px; padding-right:26px;
+    border-top:1.5px solid var(--tinta-2);
+  }
+  .g-eje{
+    flex:1; text-align:center; font-size:10px; color:var(--tinta-2);
+    padding-top:3px; overflow:visible; white-space:nowrap; min-width:0;
+    font-variant-numeric:tabular-nums;
+  }
+  .leyenda{
+    display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:14px;
+    font-size:12.5px; color:var(--tinta-2);
+  }
+  .leyenda .l-item{ display:inline-flex; align-items:center; gap:6px; }
+  .leyenda b{ color:var(--tinta); font-variant-numeric:tabular-nums; }
+  .g-tooltip{
+    position:absolute; z-index:5; background:var(--tinta); color:var(--papel);
+    border-radius:8px; padding:6px 10px; font-size:12px; pointer-events:none;
+    white-space:nowrap; transform:translate(-50%,-110%); display:none;
+    box-shadow:var(--sombra);
+  }
+
   /* Subida de foto */
   .zona-foto{
     border:2px dashed var(--linea); border-radius:12px; padding:22px 14px;
@@ -385,19 +627,43 @@
 
 <div class="shell">
   <div class="marca">
-    <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
-      <circle cx="17" cy="17" r="7.5" fill="var(--sol)"/>
-      <g stroke="var(--sol)" stroke-width="2.4" stroke-linecap="round">
-        <line x1="17" y1="2.5" x2="17" y2="7"/>
-        <line x1="17" y1="27" x2="17" y2="31.5"/>
-        <line x1="2.5" y1="17" x2="7" y2="17"/>
-        <line x1="27" y1="17" x2="31.5" y2="17"/>
-        <line x1="6.8" y1="6.8" x2="10" y2="10"/>
-        <line x1="24" y1="24" x2="27.2" y2="27.2"/>
-        <line x1="27.2" y1="6.8" x2="24" y2="10"/>
-        <line x1="10" y1="24" x2="6.8" y2="27.2"/>
-      </g>
-    </svg>
+    <span class="logo-ds l-sol">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <circle cx="17" cy="17" r="7.5" fill="var(--sol)"/>
+        <g stroke="var(--sol)" stroke-width="2.4" stroke-linecap="round">
+          <line x1="17" y1="2.5" x2="17" y2="7"/>
+          <line x1="17" y1="27" x2="17" y2="31.5"/>
+          <line x1="2.5" y1="17" x2="7" y2="17"/>
+          <line x1="27" y1="17" x2="31.5" y2="17"/>
+          <line x1="6.8" y1="6.8" x2="10" y2="10"/>
+          <line x1="24" y1="24" x2="27.2" y2="27.2"/>
+          <line x1="27.2" y1="6.8" x2="24" y2="10"/>
+          <line x1="10" y1="24" x2="6.8" y2="27.2"/>
+        </g>
+      </svg>
+    </span>
+    <span class="logo-ds l-faro">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <path d="M14 12h6l2 18H12z" fill="var(--sol)"/>
+        <rect x="13" y="7" width="8" height="5" rx="1.5" fill="var(--sol)"/>
+        <circle cx="17" cy="9.5" r="1.6" fill="var(--papel)"/>
+        <g stroke="var(--sol)" stroke-width="2.2" stroke-linecap="round">
+          <line x1="9.5" y1="6.5" x2="4.5" y2="4"/>
+          <line x1="24.5" y1="6.5" x2="29.5" y2="4"/>
+          <line x1="8.5" y1="11" x2="3" y2="11"/>
+          <line x1="25.5" y1="11" x2="31" y2="11"/>
+        </g>
+        <path d="M14.7 18h4.6M14.2 23h5.6" stroke="var(--papel)" stroke-width="2"/>
+      </svg>
+    </span>
+    <span class="logo-ds l-ventana">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="6" y="6" width="22" height="22" rx="6" fill="none" stroke="var(--sol)" stroke-width="2.6"/>
+        <line x1="17" y1="7.5" x2="17" y2="26.5" stroke="var(--sol)" stroke-width="2.2"/>
+        <line x1="7.5" y1="17" x2="26.5" y2="17" stroke="var(--sol)" stroke-width="2.2"/>
+        <path d="M10 13.5v-3h3" fill="none" stroke="var(--sol)" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>
+      </svg>
+    </span>
     <span class="wordmark">lume<b>a</b></span>
   </div>
   <p class="shell-sub">
@@ -405,6 +671,37 @@
     tocá los botones para recorrer los flujos como los verían Ana (trabajadora)
     y Bruno (pagador). Elegí una pantalla o navegá desde adentro de la app.
   </p>
+
+  <div class="sistemas" role="group" aria-label="Sistema de diseño">
+    <button class="sistema" data-ds="sol" aria-pressed="true">
+      <svg width="26" height="26" viewBox="0 0 34 34" aria-hidden="true">
+        <circle cx="17" cy="17" r="7.5" fill="#C77E14"/>
+        <g stroke="#C77E14" stroke-width="2.6" stroke-linecap="round">
+          <line x1="17" y1="3" x2="17" y2="7.5"/><line x1="17" y1="26.5" x2="17" y2="31"/>
+          <line x1="3" y1="17" x2="7.5" y2="17"/><line x1="26.5" y1="17" x2="31" y2="17"/>
+        </g>
+      </svg>
+      <span><span class="s-nombre">Sol</span><span class="s-desc">cálido y dorado, papel</span></span>
+    </button>
+    <button class="sistema" data-ds="faro" aria-pressed="false">
+      <svg width="26" height="26" viewBox="0 0 34 34" aria-hidden="true">
+        <path d="M14 12h6l2 18H12z" fill="#1F5F8B"/>
+        <rect x="13" y="7" width="8" height="5" rx="1.5" fill="#1F5F8B"/>
+        <g stroke="#1F5F8B" stroke-width="2.2" stroke-linecap="round">
+          <line x1="9.5" y1="6.5" x2="4.5" y2="4"/><line x1="24.5" y1="6.5" x2="29.5" y2="4"/>
+        </g>
+      </svg>
+      <span><span class="s-nombre">Faro</span><span class="s-desc">marino y nítido, costa uruguaya</span></span>
+    </button>
+    <button class="sistema" data-ds="ventana" aria-pressed="false">
+      <svg width="26" height="26" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="6" y="6" width="22" height="22" rx="6" fill="none" stroke="#5F7A4A" stroke-width="3"/>
+        <line x1="17" y1="7.5" x2="17" y2="26.5" stroke="#5F7A4A" stroke-width="2.4"/>
+        <line x1="7.5" y1="17" x2="26.5" y2="17" stroke="#5F7A4A" stroke-width="2.4"/>
+      </svg>
+      <span><span class="s-nombre">Ventana</span><span class="s-desc">hogareño y suave, verde salvia</span></span>
+    </button>
+  </div>
 
   <nav class="pantallas" aria-label="Pantallas del prototipo">
     <button class="chip-nav" data-goto="inicio">Inicio <span class="rol">Ana</span></button>
@@ -719,12 +1016,40 @@
           <button class="btn secundario" data-goto="actividad" style="margin-top:12px">Volver a la actividad</button>
         </section>
 
-        <!-- ============ REPORTE MENSUAL (cerrado) ============ -->
+        <!-- ============ REPORTES: grafico + cierre mensual ============ -->
         <section class="screen" id="s-reporte">
           <div class="app-head">
-            <h1>Junio 2026</h1>
-            <span class="mini">Casa de Bruno</span>
+            <h1>Reportes</h1>
+            <span class="mini">Ana · todos tus clientes</span>
           </div>
+
+          <div class="grafico-card">
+            <div class="segmento" role="tablist" aria-label="Período del gráfico">
+              <button class="on" id="g-semana" type="button">Esta semana</button>
+              <button id="g-mes" type="button">Julio</button>
+            </div>
+
+            <div class="filtros-cliente" role="group" aria-label="Filtrar por cliente">
+              <button class="f-cliente on" data-cliente="todos" type="button">Todos</button>
+              <button class="f-cliente" data-cliente="bruno" type="button">
+                <span class="punto c1"></span>Casa de Bruno
+              </button>
+              <button class="f-cliente" data-cliente="silva" type="button">
+                <span class="punto c2"></span>Familia Silva
+              </button>
+            </div>
+
+            <div class="grafico" id="grafico">
+              <div class="g-grid" id="g-grid"></div>
+              <div class="g-barras" id="g-barras"></div>
+              <div class="g-ejes" id="g-ejes"></div>
+              <div class="g-tooltip" id="g-tooltip"></div>
+            </div>
+
+            <div class="leyenda" id="g-leyenda"></div>
+          </div>
+
+          <div class="titulo-seccion">Cierre de junio 2026 · Casa de Bruno</div>
 
           <div class="banner-cierre">
             <b>Mes cerrado el 05/07/2026</b>
@@ -839,7 +1164,7 @@
     gasto:     "<b>Registrar gasto.</b> Monto + foto del comprobante. Va a aprobación del pagador igual que las horas.",
     aprobar:   "<b>Aprobaciones (vista de Bruno, pagador).</b> Aprobar de a una o todo junto (lote). Probá rechazar: el motivo es obligatorio, como pide el SDD. Toda acción notifica a la otra parte.",
     historial: "<b>Historial de una entrada.</b> La explicabilidad del SDD hecha pantalla: bitácora inmutable con registro, rechazo con motivo, corrección y aprobación final.",
-    reporte:   "<b>Reporte mensual cerrado.</b> Instantánea inmutable: totales, detalle por día con quién aprobó, lo no incluido, y los documentos de facturación (PDF o imagen) para descargar. Probá «Agregar documento»."
+    reporte:   "<b>Reportes.</b> Arriba, el gráfico de barras apiladas: horas por día con un color por cliente, vista «Esta semana» o «Julio», y filtro por cliente (probalo). Abajo, el cierre inmutable de junio con detalle, lo no incluido y los documentos de facturación. Los colores del gráfico cambian con el sistema de diseño elegido arriba."
   };
 
   var nota = document.getElementById("nota");
@@ -1046,6 +1371,191 @@
       avisar("En la app real acá se descarga el archivo desde el almacenamiento privado.");
     }
   });
+
+  // ===== Selector de sistema de diseño =====
+  var NOMBRES_DS = { sol:"Sol", faro:"Faro", ventana:"Ventana" };
+  var botonesDS = document.querySelectorAll(".sistema");
+  for (var b = 0; b < botonesDS.length; b++){
+    botonesDS[b].addEventListener("click", function(){
+      var ds = this.getAttribute("data-ds");
+      document.documentElement.setAttribute("data-ds", ds);
+      for (var i = 0; i < botonesDS.length; i++){
+        botonesDS[i].setAttribute("aria-pressed", botonesDS[i] === this ? "true" : "false");
+      }
+      avisar("Sistema «" + NOMBRES_DS[ds] + "» aplicado a todas las pantallas.");
+    });
+  }
+
+  // ===== Grafico de horas (barras apiladas por cliente) =====
+  var CLIENTES = [
+    { id:"bruno", nombre:"Casa de Bruno", clase:"c1" },
+    { id:"silva", nombre:"Familia Silva", clase:"c2" }
+  ];
+  // Horas por día de julio 2026
+  var HORAS_JULIO = {
+    1:{ bruno:3.5 }, 2:{ silva:3 }, 3:{ bruno:5 }, 6:{ bruno:4, silva:2 }, 7:{ silva:3 }
+  };
+  var vistaGrafico = "semana";
+  var filtroCliente = "todos";
+
+  function horasNum(h){
+    return h % 1 === 0 ? String(h) : h.toFixed(1).replace(".", ",");
+  }
+  function diasDeVista(){
+    if (vistaGrafico === "semana"){
+      var noms = ["Lun 6","Mar 7","Mié 8","Jue 9","Vie 10","Sáb 11","Dom 12"];
+      var res = [];
+      for (var i = 0; i < 7; i++) res.push({ dia: 6 + i, etiqueta: noms[i] });
+      return res;
+    }
+    var dias = [];
+    for (var d = 1; d <= 31; d++){
+      dias.push({ dia: d, etiqueta: (d === 1 || d % 5 === 0) ? String(d) : "" });
+    }
+    return dias;
+  }
+  function clientesVisibles(){
+    if (filtroCliente === "todos") return CLIENTES;
+    return CLIENTES.filter(function(c){ return c.id === filtroCliente; });
+  }
+
+  var elBarras = document.getElementById("g-barras");
+  var elGrid = document.getElementById("g-grid");
+  var elEjes = document.getElementById("g-ejes");
+  var elLeyenda = document.getElementById("g-leyenda");
+  var elTooltip = document.getElementById("g-tooltip");
+  var elGrafico = document.getElementById("grafico");
+
+  function renderGrafico(){
+    var dias = diasDeVista();
+    var visibles = clientesVisibles();
+    var totales = {};   // por cliente
+    var maxDia = 0;
+
+    var datosDias = dias.map(function(d){
+      var fuente = HORAS_JULIO[d.dia] || {};
+      var partes = [];
+      var total = 0;
+      visibles.forEach(function(c){
+        var h = fuente[c.id] || 0;
+        if (h > 0){
+          partes.push({ cliente: c, horas: h });
+          total += h;
+          totales[c.id] = (totales[c.id] || 0) + h;
+        }
+      });
+      if (total > maxDia) maxDia = total;
+      return { info: d, partes: partes, total: total };
+    });
+
+    var maxEscala = Math.max(2, Math.ceil(maxDia / 2) * 2); // techo par: 2,4,6,8...
+
+    // Grilla: linea al maximo y a la mitad
+    elGrid.innerHTML = "";
+    [maxEscala, maxEscala / 2].forEach(function(v){
+      var l = document.createElement("div");
+      l.className = "g-linea";
+      l.style.top = (100 - v / maxEscala * 100) + "%";
+      l.innerHTML = '<span class="g-et">' + horasNum(v) + ' h</span>';
+      elGrid.appendChild(l);
+    });
+
+    // Barras apiladas (orden fijo de apilado: Bruno abajo, Silva arriba)
+    elBarras.innerHTML = "";
+    elEjes.innerHTML = "";
+    var esSemana = vistaGrafico === "semana";
+    datosDias.forEach(function(dd){
+      var col = document.createElement("div");
+      col.className = "g-dia";
+      var etiquetaDia = esSemana ? dd.info.etiqueta : dd.info.dia + " de julio";
+      col.setAttribute("aria-label", etiquetaDia + ": " + horasNum(dd.total) + " horas");
+
+      // DOM de arriba hacia abajo: ultimo cliente primero
+      var arribaAbajo = dd.partes.slice().reverse();
+      arribaAbajo.forEach(function(p, idx){
+        var seg = document.createElement("div");
+        seg.className = "g-seg " + p.cliente.clase;
+        var pct = p.horas / maxEscala * 100;
+        seg.style.height = idx === 0 ? pct + "%" : "calc(" + pct + "% - 2px)";
+        seg.setAttribute("data-tip", etiquetaDia + " · " + p.cliente.nombre + " · " + horasNum(p.horas) + " h");
+        col.appendChild(seg);
+      });
+
+      if (esSemana && dd.total > 0){
+        var tot = document.createElement("span");
+        tot.className = "g-total";
+        tot.style.bottom = (dd.total / maxEscala * 100) + "%";
+        tot.textContent = horasNum(dd.total);
+        col.appendChild(tot);
+      }
+      elBarras.appendChild(col);
+
+      var eje = document.createElement("div");
+      eje.className = "g-eje";
+      eje.textContent = dd.info.etiqueta;
+      elEjes.appendChild(eje);
+    });
+
+    // Leyenda con totales del periodo
+    var totalGeneral = 0;
+    var items = visibles.map(function(c){
+      var t = totales[c.id] || 0;
+      totalGeneral += t;
+      return '<span class="l-item"><span class="punto ' + c.clase + '"></span>' +
+             c.nombre + ' <b>' + horasNum(t) + ' h</b></span>';
+    });
+    items.push('<span class="l-item">Total <b>' + horasNum(totalGeneral) + ' h</b></span>');
+    elLeyenda.innerHTML = items.join("");
+  }
+
+  // Tooltip por segmento (hover y toque)
+  function mostrarTip(seg){
+    var r = seg.getBoundingClientRect();
+    var rg = elGrafico.getBoundingClientRect();
+    elTooltip.textContent = seg.getAttribute("data-tip");
+    elTooltip.style.left = (r.left + r.width / 2 - rg.left) + "px";
+    elTooltip.style.top = (r.top - rg.top) + "px";
+    elTooltip.style.display = "block";
+  }
+  elBarras.addEventListener("mouseover", function(ev){
+    var seg = ev.target.closest(".g-seg");
+    if (seg) mostrarTip(seg);
+  });
+  elBarras.addEventListener("mouseout", function(){
+    elTooltip.style.display = "none";
+  });
+  elBarras.addEventListener("click", function(ev){
+    var seg = ev.target.closest(".g-seg");
+    if (seg) mostrarTip(seg);
+  });
+
+  // Toggle semana / mes
+  var btnSemana = document.getElementById("g-semana");
+  var btnMes = document.getElementById("g-mes");
+  btnSemana.addEventListener("click", function(){
+    vistaGrafico = "semana";
+    btnSemana.classList.add("on"); btnMes.classList.remove("on");
+    renderGrafico();
+  });
+  btnMes.addEventListener("click", function(){
+    vistaGrafico = "mes";
+    btnMes.classList.add("on"); btnSemana.classList.remove("on");
+    renderGrafico();
+  });
+
+  // Filtro por cliente
+  var chipsCliente = document.querySelectorAll(".f-cliente");
+  for (var fc = 0; fc < chipsCliente.length; fc++){
+    chipsCliente[fc].addEventListener("click", function(){
+      filtroCliente = this.getAttribute("data-cliente");
+      for (var i = 0; i < chipsCliente.length; i++){
+        chipsCliente[i].classList.toggle("on", chipsCliente[i] === this);
+      }
+      renderGrafico();
+    });
+  }
+
+  renderGrafico();
 
   // Hora del statusbar
   var ahora = new Date();

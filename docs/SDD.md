@@ -91,6 +91,7 @@ Una persona trabajadora puede tener varios acuerdos (varias casas), y una person
 | RF-11 | Historial visible por entrada y por acuerdo: cada acción con actor, fecha/hora y motivo. |
 | RF-12 | Cambio de tarifa con fecha de vigencia, propuesto por una parte y aceptado por la otra. |
 | RF-13 | Adjuntar al cierre mensual el documento de facturación o cobro (PDF o imagen: factura, recibo, comprobante de pago), por cualquiera de las dos partes; descargable por ambas en cualquier momento posterior. Cada adjunto queda registrado en la bitácora y notifica a la contraparte. |
+| RF-14 | Panel de reportes con gráfico de barras apiladas de horas por día: vistas «semana actual» y «mes actual», un color fijo por cliente (acuerdo), totales por cliente y total general, y filtro por cliente. Los colores por cliente cumplen verificación de accesibilidad (contraste y daltonismo) en tema claro y oscuro. |
 
 ## 4. Requisitos no funcionales
 
@@ -281,6 +282,7 @@ Contenido del reporte (visible en la aplicación y descargable como PDF):
 | D-07 | Infraestructura | Planes gratuitos (Vercel + Supabase + Resend) | Costo cero de operación al arrancar. |
 | D-08 | Nombre | **Lumea** | Elegido por la dueña del producto. Nombre de marca corto y memorable, evoca "lumen/luz": claridad en las cuentas. Dominios candidatos: lumea.uy / lumea.app. |
 | D-09 | Documentos de facturación | Adjuntos (PDF o imagen) sobre el cierre mensual, subibles por cualquiera de las partes y descargables por ambas | La factura la puede emitir la persona trabajadora y el comprobante de pago la pagadora; el cierre es el lugar natural donde ambas los buscan después. |
+| D-10 | Sistema de diseño | **En evaluación** entre tres direcciones prototipadas: «Sol» (cálido dorado, papel), «Faro» (marino nítido, costa uruguaya) y «Ventana» (hogareño suave, verde salvia), cada una con su logo | Las tres se pueden comparar en vivo en el prototipo (`docs/maquetas/lumea-prototipo.html`). |
 
 ### Preguntas abiertas
 
@@ -290,6 +292,7 @@ Contenido del reporte (visible en la aplicación y descargable como PDF):
 | P-02 | ¿Tarifas diferenciadas (nocturna, feriados)? | Una sola tarifa por acuerdo en el MVP. |
 | P-03 | ¿Se necesita algo relativo a BPS / trabajo doméstico formal (recibos, aguinaldo)? | Fuera de alcance del MVP; el reporte sirve como respaldo informal. |
 | P-04 | ¿Idioma del documento y del repositorio? | SDD en español; código y commits en inglés (convención técnica). |
+| P-05 | ¿Qué sistema de diseño se elige: Sol, Faro o Ventana? | «Sol» como base mientras se decide (ver D-10). |
 
 ---
 
