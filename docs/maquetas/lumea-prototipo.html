@@ -1,31 +1,41 @@
 <title>Lumea — Prototipo navegable</title>
 <style>
-  /* ===== Tokens — "Sol" limpio ===================================
-     Decisión de producto: la app es SIEMPRE clara y luminosa.
-     Sin modo oscuro, sin tonos violeta ni verdes de marca:
-     papel casi blanco, tinta cálida y un solo acento dorado. */
+  /* ===== Tokens — "Mediodía Vívido" ================================
+     Design system definitivo (guía visual; la funcionalidad la define
+     el SDD). Siempre clara: sin modo oscuro. Corrección aplicada:
+     texto de botones en tinta oscura sobre el dorado (contraste 6,4:1;
+     el blanco del mockup original daba 2,7:1). En la app real las
+     fuentes son Fredoka (display) y Figtree (cuerpo), autohospedadas;
+     acá se usan respaldos del sistema porque el artifact no puede
+     cargar fuentes externas. */
   :root{
-    --papel:#FDFBF6;
-    --papel-2:#F6F1E6;
+    --papel:#FFFCF5;
+    --papel-2:#FAF1DC;
     --carta:#FFFFFF;
-    --tinta:#2E2921;
-    --tinta-2:#7A7161;
-    --linea:#EDE5D3;
-    --sol:#C77E14;
-    --sol-fuerte:#A16A0B;
-    --sol-suave:#FAEED6;
-    --verde:#2F7D4F;
-    --verde-suave:#E4F1E9;
-    --rojo:#B3372F;
-    --rojo-suave:#F9E6E4;
-    --espera:#6B665E;
-    --espera-suave:#F0EBE1;
+    --tinta:#201A12;
+    --tinta-2:#6B6152;
+    --linea:#EEDFC0;
+    --sol:#E08A00;
+    --sol-fuerte:#BE7300;
+    --sol-suave:#FCE2A8;
+    --verde:#1E9E5C;
+    --verde-suave:#DFF5E7;
+    --rojo:#E13D26;
+    --rojo-suave:#FCE0DA;
+    --espera:#6E6656;
+    --espera-suave:#EAE4D6;
     --sombra:0 8px 26px rgba(95,72,30,.10);
     --radio:16px;
-    --fuente:"Trebuchet MS","Segoe UI",system-ui,-apple-system,sans-serif;
-    --btn-texto:#FFFBF2;
-    --cliente-1:#B96A1B;
-    --cliente-2:#2F6BAF;
+    --fuente:"Figtree","Segoe UI",system-ui,-apple-system,sans-serif;
+    --fuente-display:"Fredoka","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+    --btn-texto:#201A12;
+    /* Colores POR CLIENTE: los elige la persona al crear cada acuerdo,
+       de una paleta curada. Estos son los elegidos en la demo. */
+    --cliente-1:#1D6FC4;          /* Casa de Bruno · azul */
+    --cliente-1-suave:#DCEAF8;
+    --cliente-2:#C93E86;          /* Familia Silva · magenta */
+    --cliente-2-suave:#F8DFEC;
+    --cliente-3:#6B4FE0;          /* disponible en la paleta · índigo */
     /* Siempre clara, aunque el visor esté en tema oscuro: decisión de diseño. */
     color-scheme:light;
   }
@@ -106,7 +116,7 @@
 
   /* ===== Tabs inferiores ===== */
   .tabs{
-    display:grid; grid-template-columns:repeat(4,1fr);
+    display:grid; grid-template-columns:repeat(5,1fr);
     border-top:1px solid var(--linea); background:var(--carta);
   }
   .tabs button{
@@ -160,7 +170,11 @@
     display:block; width:100%; border:none; border-radius:12px;
     padding:13px 16px; font-size:16px; font-weight:700; text-align:center;
   }
-  .btn.primario{ background:var(--sol-fuerte); color:var(--btn-texto); }
+  .btn.primario{ background:var(--sol); color:var(--btn-texto); }
+  /* Jerarquía display (Fredoka en la app real) */
+  .wordmark, .app-head h1, .card h3, .kpi .v, .total-final b, .modal h3{
+    font-family:var(--fuente-display);
+  }
   .btn.secundario{
     background:none; border:1.5px solid var(--linea); color:var(--tinta);
   }
@@ -367,6 +381,72 @@
     box-shadow:var(--sombra);
   }
 
+  /* ===== Agenda semanal (horarios fijos) ===== */
+  .agenda-head{
+    display:grid; grid-template-columns:24px repeat(7,1fr); gap:3px;
+    margin-bottom:4px;
+  }
+  .agenda-head span{
+    text-align:center; font-size:10px; font-weight:700; color:var(--tinta-2);
+  }
+  .agenda-grid{
+    display:grid; grid-template-columns:24px repeat(7,1fr); gap:3px;
+  }
+  .horas-col{ position:relative; height:273px; }
+  .horas-col span{
+    position:absolute; right:2px; font-size:9px; color:var(--tinta-2);
+    transform:translateY(-50%); font-variant-numeric:tabular-nums;
+  }
+  .dia-col{
+    position:relative; height:273px; border:1px solid var(--linea);
+    border-radius:7px; background:var(--carta);
+    background-image:repeating-linear-gradient(
+      to bottom, transparent 0 62px, var(--linea) 62px 63px);
+  }
+  .bloque{
+    position:absolute; left:2px; right:2px; border-radius:5px;
+    font-size:8.5px; line-height:1.25; padding:3px 4px; overflow:hidden;
+    color:var(--tinta);
+  }
+  .bloque b{ display:block; font-size:9px; }
+  .bloque.c1{ background:var(--cliente-1-suave); border-left:3px solid var(--cliente-1); }
+  .bloque.c2{ background:var(--cliente-2-suave); border-left:3px solid var(--cliente-2); }
+  .bloque.hueco{
+    border:1.5px dashed var(--espera); background:none; color:var(--tinta-2);
+    cursor:pointer; text-align:center; display:flex; align-items:center; justify-content:center;
+  }
+  .auto-mini{
+    display:inline-block; background:var(--sol-suave); color:var(--sol-fuerte);
+    border-radius:4px; padding:0 3px; font-size:7.5px; font-weight:700;
+  }
+  .horario-fijo{
+    display:flex; align-items:center; gap:9px; padding:11px 2px;
+    border-bottom:1px solid var(--linea); font-size:13.5px;
+  }
+  .horario-fijo:last-of-type{ border-bottom:none; }
+  .horario-fijo .sub{ font-size:12px; color:var(--tinta-2); }
+  .horario-fijo .meta{ flex:1; }
+  .switch{
+    width:36px; height:21px; border-radius:999px; background:var(--linea);
+    position:relative; border:none; padding:0; flex-shrink:0;
+  }
+  .switch::after{
+    content:""; position:absolute; left:2px; top:2px; width:17px; height:17px;
+    border-radius:50%; background:var(--carta); box-shadow:0 1px 3px rgba(0,0,0,.2);
+    transition:left .15s;
+  }
+  .switch.on{ background:var(--verde); }
+  .switch.on::after{ left:17px; }
+  .switch-label{ font-size:10.5px; color:var(--tinta-2); text-align:center; width:52px; }
+
+  /* ===== Selector de color por cliente ===== */
+  .paleta{ display:flex; gap:10px; flex-wrap:wrap; }
+  .sw{
+    width:36px; height:36px; border-radius:50%; border:3px solid transparent;
+    padding:0; cursor:pointer; box-shadow:inset 0 0 0 2px var(--carta);
+  }
+  .sw.on{ border-color:var(--tinta); }
+
   /* Subida de foto */
   .zona-foto{
     border:2px dashed var(--linea); border-radius:12px; padding:22px 14px;
@@ -435,6 +515,8 @@
     <button class="chip-nav" data-goto="registrar">Registrar horas <span class="rol">Ana</span></button>
     <button class="chip-nav" data-goto="actividad">Actividad del mes <span class="rol">Ana</span></button>
     <button class="chip-nav" data-goto="gasto">Registrar gasto <span class="rol">Ana</span></button>
+    <button class="chip-nav" data-goto="agenda">Agenda semanal <span class="rol">Ana</span></button>
+    <button class="chip-nav" data-goto="nuevo">Nuevo cliente <span class="rol">Ana</span></button>
     <button class="chip-nav" data-goto="aprobar">Aprobaciones <span class="rol">Bruno</span></button>
     <button class="chip-nav" data-goto="historial">Historial de una entrada <span class="rol">ambos</span></button>
     <button class="chip-nav" data-goto="reporte">Reporte mensual <span class="rol">ambos</span></button>
@@ -653,6 +735,141 @@
           <p class="aviso">Bruno recibe un aviso con la foto y el monto para aprobar o rechazar.</p>
         </section>
 
+        <!-- ============ AGENDA SEMANAL (Ana) ============ -->
+        <section class="screen" id="s-agenda">
+          <div class="app-head">
+            <h1>Agenda</h1>
+            <span class="mini">semana del 6 al 12 de julio</span>
+          </div>
+          <p class="saludo">Tus horarios fijos de cada semana, y los huecos que te quedan libres.</p>
+
+          <div class="agenda-head">
+            <span></span><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+          </div>
+          <div class="agenda-grid">
+            <div class="horas-col">
+              <span style="top:0">7</span>
+              <span style="top:63px">10</span>
+              <span style="top:126px">13</span>
+              <span style="top:189px">16</span>
+              <span style="top:252px">19</span>
+            </div>
+            <div class="dia-col">
+              <div class="bloque c2" style="top:32px;height:84px">
+                <b>Familia Silva</b>8:30–12:30
+              </div>
+            </div>
+            <div class="dia-col">
+              <div class="bloque c1" style="top:21px;height:136px">
+                <b>Casa de Bruno</b>8:00–14:30 <span class="auto-mini">auto</span>
+              </div>
+            </div>
+            <div class="dia-col">
+              <div class="bloque c2" style="top:147px;height:73px">
+                <b>Familia Silva</b>14:00–17:30
+              </div>
+            </div>
+            <div class="dia-col">
+              <button class="bloque hueco" id="hueco" style="top:21px;height:105px">
+                Hueco libre<br>8:00–13:00
+              </button>
+            </div>
+            <div class="dia-col">
+              <div class="bloque c1" style="top:42px;height:105px">
+                <b>Casa de Bruno</b>9:00–14:00
+              </div>
+            </div>
+            <div class="dia-col"></div>
+            <div class="dia-col"></div>
+          </div>
+
+          <div class="titulo-seccion">Horarios fijos</div>
+          <div class="horario-fijo">
+            <span class="punto c1"></span>
+            <div class="meta">
+              Martes 8:00 a 14:30 · Casa de Bruno
+              <div class="sub">6,5 h · se cargan solas al final del día</div>
+            </div>
+            <div>
+              <button class="switch on" aria-label="Carga automática activada" aria-pressed="true"></button>
+              <div class="switch-label">se carga sola</div>
+            </div>
+          </div>
+          <div class="horario-fijo">
+            <span class="punto c1"></span>
+            <div class="meta">
+              Viernes 9:00 a 14:00 · Casa de Bruno
+              <div class="sub">5 h · carga manual</div>
+            </div>
+            <div>
+              <button class="switch" aria-label="Carga automática desactivada" aria-pressed="false"></button>
+              <div class="switch-label">se carga sola</div>
+            </div>
+          </div>
+          <div class="horario-fijo">
+            <span class="punto c2"></span>
+            <div class="meta">
+              Lunes 8:30 a 12:30 y miércoles 14:00 a 17:30 · Familia Silva
+              <div class="sub">7,5 h por semana · carga manual</div>
+            </div>
+            <div>
+              <button class="switch" aria-label="Carga automática desactivada" aria-pressed="false"></button>
+              <div class="switch-label">se carga sola</div>
+            </div>
+          </div>
+
+          <p class="aviso">
+            Las horas que se cargan solas entran <b>siempre como pendientes</b>:
+            el cliente las aprueba igual que las cargadas a mano, y en el historial
+            queda que vinieron de tu horario fijo. Si un día no vas, la anulás antes
+            o el cliente la rechaza — nada se paga sin aprobación.
+          </p>
+          <button class="btn secundario" style="margin-top:12px">Agregar horario fijo</button>
+        </section>
+
+        <!-- ============ NUEVO CLIENTE (Ana) ============ -->
+        <section class="screen" id="s-nuevo">
+          <div class="app-head"><h1>Nuevo cliente</h1></div>
+          <p class="saludo">Creá el acuerdo e invitá a la otra persona. Al aceptar, queda activo.</p>
+
+          <div class="campo">
+            <label for="n-nombre">Nombre del cliente o casa</label>
+            <input type="text" id="n-nombre" value="Casa de Maru">
+          </div>
+          <div class="dos">
+            <div class="campo">
+              <label for="n-servicio">Servicio</label>
+              <select id="n-servicio"><option>Limpieza</option><option>Niñera</option><option>Autos</option><option>Jardín</option><option>Otro</option></select>
+            </div>
+            <div class="campo">
+              <label for="n-tarifa">Tarifa por hora</label>
+              <input type="number" id="n-tarifa" value="300">
+            </div>
+          </div>
+          <div class="campo">
+            <label for="n-email">Correo de la persona que paga</label>
+            <input type="email" id="n-email" placeholder="maru@ejemplo.com">
+          </div>
+
+          <div class="campo">
+            <label>Color para este cliente</label>
+            <div class="paleta" id="paleta">
+              <button class="sw" style="background:#1D6FC4" aria-label="Azul" title="Azul"></button>
+              <button class="sw" style="background:#C93E86" aria-label="Magenta" title="Magenta"></button>
+              <button class="sw on" style="background:#6B4FE0" aria-label="Índigo" title="Índigo"></button>
+              <button class="sw" style="background:#0E7C9C" aria-label="Petróleo" title="Petróleo"></button>
+              <button class="sw" style="background:#C05621" aria-label="Terracota" title="Terracota"></button>
+              <button class="sw" style="background:#8C5A2B" aria-label="Marrón" title="Marrón"></button>
+            </div>
+          </div>
+          <p class="aviso">
+            Con este color vas a ver a este cliente en el gráfico y en la agenda.
+            La paleta está probada para que siempre se distinga bien, incluso con daltonismo.
+          </p>
+
+          <button class="btn primario" id="btn-nuevo" style="margin-top:12px">Invitar y crear el acuerdo</button>
+        </section>
+
         <!-- ============ APROBACIONES (Bruno) ============ -->
         <section class="screen" id="s-aprobar">
           <div class="app-head">
@@ -850,6 +1067,10 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8.5V12l2.5 2"/></svg>
             Registrar
           </button>
+          <button data-goto="agenda" id="tab-agenda">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v3.5m7-3.5v3.5"/></svg>
+            Agenda
+          </button>
           <button data-goto="actividad" id="tab-actividad">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 19V9m5.3 10V5m5.4 14v-7M20 19V8"/></svg>
             Actividad
@@ -889,6 +1110,8 @@
     registrar: "<b>Registrar horas.</b> El objetivo del SDD: cargar una jornada en menos de 30 segundos. Se puede cargar por inicio/fin o solo duración, y el importe se calcula a la vista.",
     actividad: "<b>Actividad del mes.</b> Cada entrada muestra su estado (aprobada / pendiente / rechazada) y quién actuó. Tocá una entrada para ver su historial completo.",
     gasto:     "<b>Registrar gasto.</b> Monto + foto del comprobante. Va a aprobación del pagador igual que las horas.",
+    agenda:    "<b>Agenda semanal.</b> Horarios fijos repetitivos por cliente (con su color) y los huecos libres para planificar. El interruptor «se carga sola» genera la entrada automáticamente al final del día — pero entra <b>pendiente</b>: la aprobación nunca se saltea.",
+    nuevo:     "<b>Nuevo cliente.</b> Alta del acuerdo con invitación por correo y <b>color a elección</b> de una paleta curada (probada para contraste y daltonismo). Ese color identifica al cliente en el gráfico y la agenda.",
     aprobar:   "<b>Aprobaciones (vista de Bruno, pagador).</b> Aprobar de a una o todo junto (lote). Probá rechazar: el motivo es obligatorio, como pide el SDD. Toda acción notifica a la otra parte.",
     historial: "<b>Historial de una entrada.</b> La explicabilidad del SDD hecha pantalla: bitácora inmutable con registro, rechazo con motivo, corrección y aprobación final.",
     reporte:   "<b>Reportes.</b> Arriba, el gráfico de barras apiladas: horas por día con un color por cliente, vista «Esta semana» o «Julio», y filtro por cliente (probalo). Abajo, el cierre inmutable de junio con detalle, lo no incluido y los documentos de facturación."
@@ -998,6 +1221,36 @@
   document.getElementById("btn-gasto").addEventListener("click", function(){
     avisar("Gasto enviado. Bruno recibió un aviso para revisarlo.");
     irA("actividad");
+  });
+
+  // ===== Agenda: interruptores de carga automática y hueco libre =====
+  document.addEventListener("click", function(ev){
+    var sw = ev.target.closest(".switch");
+    if (sw){
+      sw.classList.toggle("on");
+      var activo = sw.classList.contains("on");
+      sw.setAttribute("aria-pressed", activo ? "true" : "false");
+      avisar(activo
+        ? "Listo: esas horas se cargan solas al final del día, siempre pendientes de aprobación."
+        : "Carga automática desactivada: esas horas se cargan a mano.");
+    }
+  });
+  document.getElementById("hueco").addEventListener("click", function(){
+    avisar("Hueco de 5 horas el jueves. En la app real, acá podés ofrecerte o agendar otro cliente.");
+  });
+
+  // ===== Nuevo cliente: paleta de color =====
+  document.getElementById("paleta").addEventListener("click", function(ev){
+    var sw = ev.target.closest(".sw");
+    if (!sw) return;
+    var todos = this.querySelectorAll(".sw");
+    for (var i = 0; i < todos.length; i++) todos[i].classList.remove("on");
+    sw.classList.add("on");
+    avisar("Color «" + sw.getAttribute("aria-label") + "» elegido para Casa de Maru.");
+  });
+  document.getElementById("btn-nuevo").addEventListener("click", function(){
+    avisar("Invitación enviada. El acuerdo se activa cuando Maru acepte la tarifa.");
+    irA("inicio");
   });
 
   // ===== Aprobaciones (Bruno) =====

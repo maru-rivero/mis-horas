@@ -35,7 +35,7 @@ Estas son las reglas que gobiernan todas las decisiones de diseño, en orden de 
 
 ### 1.3 Alcance de la versión 1 (MVP)
 
-**Incluye**: registro de horas, registro de gastos con comprobante, flujo de aprobación bilateral (individual y por lote), cierre mensual automático, reporte mensual, documentos de facturación adjuntos al cierre (PDF o imagen), notificaciones por correo electrónico.
+**Incluye**: registro de horas, registro de gastos con comprobante, flujo de aprobación bilateral (individual y por lote), agenda semanal con horarios fijos y carga automática de horas (siempre pendientes de aprobación), color a elección por cliente, cierre mensual automático, reporte mensual con gráfico por cliente, documentos de facturación adjuntos al cierre (PDF o imagen), notificaciones por correo electrónico.
 
 **No incluye (fases posteriores)**: notificaciones push web (fase 2), WhatsApp (fase 3), aplicaciones nativas, pagos dentro de la aplicación, cálculos de aportes a BPS o aguinaldo.
 
@@ -60,6 +60,7 @@ Un **acuerdo** vincula a una persona trabajadora con una persona pagadora para u
 - Tipo de servicio (limpieza, niñera, autos, jardín, otro).
 - Tarifa por hora en pesos uruguayos, acordada por ambas partes.
 - Historial de tarifas: si la tarifa cambia, la nueva rige desde una fecha; las horas anteriores conservan la tarifa vigente en su fecha. Así todo total es reproducible.
+- **Color del cliente**: al crear el acuerdo, la persona elige un color de una paleta curada (verificada por contraste y daltonismo). Ese color identifica al cliente en el gráfico de horas y en la agenda; no cambia al filtrar ni al agregar clientes.
 
 Una persona trabajadora puede tener varios acuerdos (varias casas), y una persona pagadora puede tener varios acuerdos (varios servicios). Cada acuerdo tiene sus horas, gastos, cierres y reportes propios.
 
@@ -91,7 +92,11 @@ Una persona trabajadora puede tener varios acuerdos (varias casas), y una person
 | RF-11 | Historial visible por entrada y por acuerdo: cada acción con actor, fecha/hora y motivo. |
 | RF-12 | Cambio de tarifa con fecha de vigencia, propuesto por una parte y aceptado por la otra. |
 | RF-13 | Adjuntar al cierre mensual el documento de facturación o cobro (PDF o imagen: factura, recibo, comprobante de pago), por cualquiera de las dos partes; descargable por ambas en cualquier momento posterior. Cada adjunto queda registrado en la bitácora y notifica a la contraparte. |
-| RF-14 | Panel de reportes con gráfico de barras apiladas de horas por día: vistas «semana actual» y «mes actual», un color fijo por cliente (acuerdo), totales por cliente y total general, y filtro por cliente. Los colores por cliente cumplen verificación de accesibilidad (contraste y daltonismo) en tema claro y oscuro. |
+| RF-14 | Panel de reportes con gráfico de barras apiladas de horas por día: vistas «semana actual» y «mes actual», el color elegido de cada cliente, totales por cliente y total general, y filtro por cliente. |
+| RF-15 | Color por cliente elegido por la persona usuaria al crear el acuerdo, de una paleta curada verificada por contraste y daltonismo sobre el fondo claro. El color sigue al cliente en gráficos, agenda y leyendas. |
+| RF-16 | Agenda semanal (estilo calendario): muestra los horarios fijos de todos los acuerdos con el color de cada cliente, y deja ver los huecos libres para planificar horas con otros clientes. |
+| RF-17 | Horarios fijos repetitivos por acuerdo: día de la semana + hora de inicio y fin (ej.: «todos los martes de 8:00 a 14:30 en Casa de Maru»), con vigencia desde/hasta, editables; todo cambio queda en la bitácora. |
+| RF-18 | Carga automática opcional por horario fijo: al final del día, la app genera la entrada de horas correspondiente **en estado pendiente** — entra al mismo flujo de aprobación que una entrada manual, nunca se aprueba de oficio. La bitácora registra que fue generada desde el horario fijo; quien trabaja puede editarla o anularla y la contraparte puede rechazarla como cualquier otra. |
 
 ## 4. Requisitos no funcionales
 
@@ -153,7 +158,16 @@ Al cierre:
 
 *Justificación de la ventana de gracia*: el mes calendario termina, pero las personas necesitan unos días para aprobar lo último. Cinco días equilibra puntualidad del cobro con tiempo real de revisión. Es un parámetro configurable por acuerdo en versiones futuras.*
 
-### 5.4 Inmutabilidad y trazabilidad
+### 5.4 Horarios fijos y carga automática
+
+- Un **horario fijo** pertenece a un acuerdo: día de la semana + rango horario + vigencia. Puede haber varios por acuerdo.
+- Si la persona activa **«se carga sola»** para un horario fijo, al final de cada día que corresponda la aplicación genera la entrada de horas automáticamente.
+- Regla innegociable: **la entrada generada nace PENDIENTE**. La aprobación de la contraparte nunca se saltea; la automatización solo ahorra el tipeo, no el consentimiento.
+- La entrada generada es idéntica a una manual en todo lo demás: se puede editar (vuelve a pendiente si estaba aprobada), anular o rechazar con motivo. En la bitácora consta «generada automáticamente desde el horario fijo de los martes 8:00–14:30».
+- Si ya existe una entrada manual que se superpone con el horario fijo ese día, **no** se genera la automática (evita duplicados).
+- La agenda muestra además los **huecos libres** entre horarios fijos, para que la persona trabajadora planifique horas con otros clientes.
+
+### 5.5 Inmutabilidad y trazabilidad
 
 - La tabla de **eventos** es de solo-agregar: `quién, cuándo, qué acción, sobre qué entrada, motivo, datos antes/después`.
 - Toda pantalla de detalle tiene una sección **"Historial"** que muestra estos eventos en lenguaje claro: *"Ana registró 4 horas el 12/07 · Bruno aprobó el 13/07 · Ana editó la nota el 14/07 (volvió a pendiente) · Bruno aprobó el 14/07"*.
@@ -181,11 +195,15 @@ Al cierre:
 ```
 usuarios            (id, nombre, email, telefono?, creado_en)
 acuerdos            (id, trabajador_id, pagador_id, servicio, estado, moneda='UYU',
+                     color,  -- elegido de la paleta curada, identifica al cliente
                      dia_cierre=5, creado_en, aceptado_por_trabajador_en, aceptado_por_pagador_en)
+horarios_fijos      (id, acuerdo_id, dia_semana, hora_inicio, hora_fin, carga_automatica bool,
+                     vigente_desde, vigente_hasta?, creado_por, estado, creado_en)
 tarifas             (id, acuerdo_id, monto_por_hora, vigente_desde,
                      propuesta_por, aceptada_por, aceptada_en)
 registros_horas     (id, acuerdo_id, fecha, inicio?, fin?, duracion_min, tarea,
-                     nota?, creado_por, estado, tarifa_id_aplicada, creado_en)
+                     nota?, creado_por, estado, tarifa_id_aplicada, creado_en,
+                     origen 'manual'|'automatica', horario_fijo_id?)
 gastos              (id, acuerdo_id, fecha, monto, descripcion,
                      comprobante_url, creado_por, estado, creado_en)
 eventos             (id, entidad_tipo, entidad_id, acuerdo_id, actor_id, accion,
@@ -212,6 +230,7 @@ Canal del MVP: **correo electrónico**. Fase 2: push web (PWA). Fase 3: WhatsApp
 | Evento | Destinatario | Contenido |
 |---|---|---|
 | Entrada registrada (hora/gasto) | La contraparte | Qué se registró y botón para aprobar/rechazar. Se agrupan en un resumen diario si hay varias. |
+| Entrada generada automáticamente (horario fijo) | Ambas partes | A quien trabaja: «se cargaron tus 6,5 h de los martes»; a quien paga: aviso para aprobar, igual que una manual. |
 | Entrada aprobada | Quien la registró | Confirmación con detalle. |
 | Entrada rechazada | Quien la registró | Motivo del rechazo y enlace para corregir. |
 | **Lote aprobado** | **Ambas partes** | Resumen del lote: cantidad de entradas, horas totales, importe. |
@@ -263,9 +282,9 @@ Contenido del reporte (visible en la aplicación y descargable como PDF):
 
 | Fase | Contenido |
 |---|---|
-| **1 — MVP** | Cuentas, acuerdos e invitaciones, registro de horas y gastos, aprobación individual y por lote, cierre automático, reporte mensual con PDF, notificaciones por correo, historial/bitácora visible. |
-| **2** | Notificaciones push (PWA), 2FA, cambio de tarifa asistido, exportación CSV, día de cierre configurable. |
-| **3** | WhatsApp, plantillas de jornada ("mismo horario que siempre"), múltiples monedas, modo sin conexión. |
+| **1 — MVP** | Cuentas, acuerdos e invitaciones con color por cliente, registro de horas y gastos, aprobación individual y por lote, agenda semanal con horarios fijos y carga automática (siempre pendiente de aprobación), cierre automático, reporte mensual con PDF y gráfico por cliente, notificaciones por correo, historial/bitácora visible. |
+| **2** | Notificaciones push (PWA), 2FA, cambio de tarifa asistido, exportación CSV, día de cierre configurable, sugerencias de huecos libres. |
+| **3** | WhatsApp, múltiples monedas, modo sin conexión. |
 
 ---
 
@@ -283,6 +302,9 @@ Contenido del reporte (visible en la aplicación y descargable como PDF):
 | D-08 | Nombre | **Lumea** | Elegido por la dueña del producto. Nombre de marca corto y memorable, evoca "lumen/luz": claridad en las cuentas. Dominios candidatos: lumea.uy / lumea.app. |
 | D-09 | Documentos de facturación | Adjuntos (PDF o imagen) sobre el cierre mensual, subibles por cualquiera de las partes y descargables por ambas | La factura la puede emitir la persona trabajadora y el comprobante de pago la pagadora; el cierre es el lugar natural donde ambas los buscan después. |
 | D-10 | Sistema de diseño | **«Sol» limpio**: papel casi blanco, acento dorado, logo de sol, tipografía amigable. **Siempre clara**: sin modo oscuro. Sin tonos violeta ni verdes de marca (el verde queda solo para el estado «aprobada»). Faro y Ventana descartadas. | Decisión de la dueña del producto: estética limpia, luminosa y cercana, nunca «tech». |
+| D-11 | Guía visual definitiva | **«Mediodía Vívido»** (generado con Design sobre la dirección Sol): papel `#FFFCF5`, acento dorado `#E08A00`, tinta `#201A12`, Fredoka (display) + Figtree (cuerpo), logo de sol de rayos geométricos. **Es guía de diseño, no de funcionalidad**: los flujos los define este SDD. Corrección aplicada: texto de botones en tinta oscura sobre el dorado (el blanco no cumplía contraste WCAG). | Aprobado por la dueña del producto sobre la propuesta de Design. |
+| D-12 | Colores de cliente | Los elige la persona usuaria al crear cada acuerdo, de una **paleta curada** (azul, magenta, índigo, petróleo, terracota, marrón) verificada por contraste y daltonismo; no son fijos por posición. | Pedido explícito; la paleta curada mantiene la garantía de legibilidad sin limitar la elección. |
+| D-13 | Agenda y carga automática | Agenda semanal con horarios fijos repetitivos por acuerdo y carga automática opcional; toda entrada generada **nace pendiente** y pasa por la aprobación normal. | Pedido explícito: automatizar el tipeo sin saltear jamás el consentimiento de la contraparte. |
 
 ### Preguntas abiertas
 
