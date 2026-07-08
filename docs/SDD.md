@@ -1,8 +1,8 @@
 # Documento de Diseño de Software (SDD)
 
-## Lumea — Registro de horas y gastos para servicios del hogar
+## Horaria — Registro de horas y gastos para servicios del hogar
 
-*Lumea: nombre de marca inventado, evocando "lumen/luz" — claridad y transparencia en las cuentas.*
+*Horaria: del griego Horai (las diosas del tiempo y las estaciones), en español. Directo y de trabajo — sin dulzura, sin ambigüedad sobre qué hace la app.*
 
 | | |
 |---|---|
@@ -299,18 +299,19 @@ Contenido del reporte (visible en la aplicación y descargable como PDF):
 | D-05 | Granularidad de aprobación | Individual **y** por lote | Pedido explícito; ambas con notificación a todas las partes. |
 | D-06 | Cierre de mes | Automático, día 5 del mes siguiente, con recordatorios días 1 y 3 | Pedido explícito de cierre automático; la gracia da tiempo de revisión. |
 | D-07 | Infraestructura | Planes gratuitos (Vercel + Supabase + Resend) | Costo cero de operación al arrancar. |
-| D-08 | Nombre | **Lumea** | Elegido por la dueña del producto. Nombre de marca corto y memorable, evoca "lumen/luz": claridad en las cuentas. Dominios candidatos: lumea.uy / lumea.app. |
+| D-08 | Nombre | ~~Lumea~~ → **Horaria** (ver D-14) | Elegido por la dueña del producto originalmente como "Lumea" (evoca "lumen/luz": claridad en las cuentas). Reemplazado: ver D-14. |
 | D-09 | Documentos de facturación | Adjuntos (PDF o imagen) sobre el cierre mensual, subibles por cualquiera de las partes y descargables por ambas | La factura la puede emitir la persona trabajadora y el comprobante de pago la pagadora; el cierre es el lugar natural donde ambas los buscan después. |
 | D-10 | Sistema de diseño | **«Sol» limpio**: papel casi blanco, acento dorado, logo de sol, tipografía amigable. **Siempre clara**: sin modo oscuro. Sin tonos violeta ni verdes de marca (el verde queda solo para el estado «aprobada»). Faro y Ventana descartadas. | Decisión de la dueña del producto: estética limpia, luminosa y cercana, nunca «tech». |
 | D-11 | Guía visual definitiva | **«Mediodía Vívido»** (generado con Design sobre la dirección Sol): papel `#FFFCF5`, acento dorado `#E08A00`, tinta `#201A12`, Fredoka (display) + Figtree (cuerpo), logo de sol de rayos geométricos. **Es guía de diseño, no de funcionalidad**: los flujos los define este SDD. Corrección aplicada: texto de botones en tinta oscura sobre el dorado (el blanco no cumplía contraste WCAG). | Aprobado por la dueña del producto sobre la propuesta de Design. |
 | D-12 | Colores de cliente | Los elige la persona usuaria al crear cada acuerdo, de una **paleta curada** (azul, magenta, índigo, petróleo, terracota, marrón) verificada por contraste y daltonismo; no son fijos por posición. | Pedido explícito; la paleta curada mantiene la garantía de legibilidad sin limitar la elección. |
 | D-13 | Agenda y carga automática | Agenda semanal con horarios fijos repetitivos por acuerdo y carga automática opcional; toda entrada generada **nace pendiente** y pasa por la aprobación normal. | Pedido explícito: automatizar el tipeo sin saltear jamás el consentimiento de la contraparte. |
+| D-14 | Nombre (reemplazo de Lumea) | **Horaria** | "Lumea" existe como empresa en Uruguay (rubro distinto) y se descartó por eso. Se evaluaron y descartaron: MisHoras/Tempo/nombres de dioses griegos del tiempo (Tempo y Kronos son marcas líderes globales del rubro), Clarea (agencia uruguaya existente), Horai (app homónima ya publicada en tiendas). Horaria deriva de Horai pero en español, verificada libre en Uruguay y en tiendas de aplicaciones; sin dulzura, describe directamente una herramienta de trabajo. |
 
 ### Preguntas abiertas
 
 | # | Pregunta | Supuesto vigente mientras tanto |
 |---|---|---|
-| P-01 | ~~¿Nombre definitivo de la aplicación?~~ | **Resuelta**: Lumea (ver D-08). |
+| P-01 | ~~¿Nombre definitivo de la aplicación?~~ | **Resuelta**: Horaria (ver D-14). |
 | P-02 | ¿Tarifas diferenciadas (nocturna, feriados)? | Una sola tarifa por acuerdo en el MVP. |
 | P-03 | ¿Se necesita algo relativo a BPS / trabajo doméstico formal (recibos, aguinaldo)? | Fuera de alcance del MVP; el reporte sirve como respaldo informal. |
 | P-04 | ¿Idioma del documento y del repositorio? | SDD en español; código y commits en inglés (convención técnica). |

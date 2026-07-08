@@ -1,13 +1,13 @@
-# Prompt de diseño — identidad visual de Lumea
+# Prompt de diseño — identidad visual de Horaria
 
 Prompt listo para pegar en Claude (claude.ai, Claude Code) o en cualquier
-herramienta de diseño con IA, para refinar la dirección visual elegida («Sol»,
-decisión D-10 del SDD) sin cambiar su carácter.
+herramienta de diseño con IA, para refinar la dirección visual elegida
+(«Mediodía Vívido», decisiones D-10/D-11 del SDD) sin cambiar su carácter.
 
 ---
 
 ```
-You are the design lead for "Lumea", a free web/PWA app (Spanish, Uruguay)
+You are the design lead for "Horaria", a free web/PWA app (Spanish, Uruguay)
 where independent household workers — cleaners, babysitters, car detailers —
 and the homeowners who hire them track worked hours and expenses, approve
 them, and close a monthly payment report. Users are non-technical and use
@@ -16,11 +16,12 @@ every number in the app can be explained (who logged it, who approved it,
 at what rate).
 
 BRAND
-- Name: Lumea (invented, evokes "lumen"/light — clarity in the accounts).
-- Chosen direction to refine, NOT replace: "Sol" — clean, near-white warm
-  paper background, golden-amber accent (currently #C77E14 on #FDFBF6
-  paper, warm ink #2E2921), a small sun as the logo mark, friendly rounded
-  humanist typography, lowercase wordmark "lumea".
+- Name: Horaria (invented, evokes "lumen"/light — clarity in the accounts).
+- Chosen direction to refine, NOT replace: "Mediodía Vívido" (a "Sol"
+  refinement) — clean, near-white warm paper (#FFFCF5), a vivid saturated
+  gold accent (#E08A00, pressed #BE7300), warm dark ink (#201A12), a
+  small sun as the logo mark (geometric rays), Fredoka (display) +
+  Figtree (body), lowercase wordmark "horaria".
 - The app is ALWAYS light: no dark mode, no black/dark backgrounds.
 - Personality: warm, honest, simple, optimistic, airy and clean. Never
   corporate, never childish, never fintech-cold, never "techy". No purple
@@ -28,8 +29,8 @@ BRAND
   chips), no neon, no gradients-on-dark.
 
 YOUR TASK
-Produce 3 refined variations of this same "Sol" direction (do not propose
-new directions in other hues):
+Produce 3 refined variations of this same "Mediodía Vívido" direction
+(do not propose new directions in other hues):
 1. A refined color system: paper/surface tones, ink tones, the golden
    accent, and soft fills — as design tokens with hex values. Light
    theme only: the app never renders on dark backgrounds.
@@ -48,9 +49,11 @@ new directions in other hues):
 HARD CONSTRAINTS
 - Status colors are reserved and must stay distinct from the brand
   accent: approved = green, pending = neutral gray chip, rejected = red.
-- Chart client colors: one fixed color per client, must pass contrast
-  (>= 3:1 vs surface) and color-vision-deficiency separation on the
-  light surface; never reuse status colors for clients.
+- Client colors are chosen by the user (not fixed by the system) from a
+  curated palette shown when creating each client/agreement. Every color
+  in that curated palette must pass contrast (>= 3:1 vs surface) and
+  color-vision-deficiency separation from every other option on the
+  light surface; never reuse status colors as client-palette options.
 - Currency format: "$ 1.160" (UYU, dot as thousands separator);
   dates DD/MM; all UI text in Spanish.
 - Big touch targets, one primary action per screen, readable by users
@@ -65,7 +68,7 @@ changed vs. the base and why it strengthens "trust through clarity".
 ---
 
 **Cómo usarlo**: pegalo tal cual. Si la herramienta acepta imágenes, adjuntá
-capturas del prototipo actual (`docs/maquetas/lumea-prototipo.html`, sistema
-«Sol») para que la variación parta de lo existente. Cuando elijas una
-variación, traé los tokens (tabla de colores) de vuelta a este repo y se
+capturas del prototipo actual (`docs/maquetas/horaria-prototipo.html`, sistema
+«Mediodía Vívido») para que la variación parta de lo existente. Cuando elijas
+una variación, traé los tokens (tabla de colores) de vuelta a este repo y se
 aplican al prototipo y al SDD.
